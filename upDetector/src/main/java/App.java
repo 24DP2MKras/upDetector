@@ -19,11 +19,9 @@ public class App {
         System.out.println("Registresanas (1)  ");
         System.out.println("Pierakstisanas (2)  ");
         System.out.println("Krasu shema (3)");
+        System.out.println("Atgriezties uz sakuma ekranu (4)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
-        if(userAnswer.equals("")){
-            break;
-            }
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija
             registracija register = new registracija();
@@ -40,12 +38,26 @@ public class App {
             System.out.println("    Vai velies tekstu ar krasam?   ");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
-            String userAnswer2 = answer.nextLine();
-            if(userAnswer2.equals("1")){
+            System.out.print("Atbilde: ");
+                userAnswer = answer.nextLine();
+            if(userAnswer.equals("1")){
+                int colors = 1;
                 System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+            }
+            if(userAnswer.equals("2")) {
+                int colors = 0;
+                System.out.println("[Komanda izpildita]");
             }
             break;
         }
+        if (userAnswer.equals("4")) {
+            //opcija iet uz sakumu jabut seit
+            App tests = new App();
+            tests.App();
+        }
+        if (userAnswer.equals("")) {
+            break;
+            }
         }
     }
     
