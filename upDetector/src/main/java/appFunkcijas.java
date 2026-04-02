@@ -67,9 +67,9 @@ public class appFunkcijas {
                 }
             } else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu vārdu (piemeram: Janis)!]\u001B[0m");
+                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu segvārdu (piemeram: ShadowX99)!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu vārdu (piemeram: Janis)!]");
+                    System.out.println("[Lūdzu ievadiet derīgu segvārdu (piemeram: ShadowX99)!]");
                 }
                 
             }

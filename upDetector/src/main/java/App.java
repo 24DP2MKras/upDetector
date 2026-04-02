@@ -1,6 +1,7 @@
 import java.util.*;
 import java.awt.*;
 public class App {
+    public static int colors = 1; // 1 ir krāsas, 0 nav krāsu
     public String todo() {
         return "This method must mean theres something to do";
         //make a main menu screen for the user
@@ -24,7 +25,7 @@ public class App {
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija
-            registracija register = new registracija();
+            appFunkcijas register = new appFunkcijas();
             register.registracija();
             break;
         }
@@ -48,7 +49,7 @@ public class App {
                 int colors = 0;
                 System.out.println("[Komanda izpildita]");
             }
-            break;
+            break; //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if (userAnswer.equals("4")) {
             //opcija iet uz sakumu jabut seit
