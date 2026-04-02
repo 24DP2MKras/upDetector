@@ -7,6 +7,13 @@ public class appFunkcijas {
     public String parole;
     public String parolesParbaude;
 
+    public List<Lietotajs> registracija; 
+
+    public appFunkcijas(){
+        this.registracija = new ArrayList<>();
+    }
+
+
     Scanner answer = new Scanner(System.in);
     public void registracija() {
         System.out.println("    Tu esi registracijas sadala!");
@@ -128,8 +135,10 @@ public class appFunkcijas {
             }
         }
     }
-    public void add(String vards, String uzvards, String segvards, String ePasts, String password) {
-        ArrayList<ieraksts> lietotajaIeraksts = new ArrayList<>();
+    public void add() {
+        Lietotajs jaunsLietotajs = new Lietotajs(this.vards, this.uzvards, this.segvards, this.ePasts, this.parole);
+        registracija.add(jaunsLietotajs);
+        System.out.println(registracija);
     }
         
     

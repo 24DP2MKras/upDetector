@@ -27,6 +27,7 @@ public class App {
             //Te jabut Registracijai redirekcija
             appFunkcijas register = new appFunkcijas();
             register.registracija();
+            register.add();
             break;
         }
         if(userAnswer.equals("2")) {
