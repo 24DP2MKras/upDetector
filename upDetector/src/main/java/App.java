@@ -31,7 +31,8 @@ public class App {
         }
         if(userAnswer.equals("2")) {
             //Te jabut Pierakstisanas redirekcija
-            System.out.println("esi pierakstisanas sadala!");
+            appFunkcijas login = new appFunkcijas();
+            login.pierakstisanas();
             break;
         }
         if(userAnswer.equals("3")) {
