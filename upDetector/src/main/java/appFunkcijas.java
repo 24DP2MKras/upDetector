@@ -127,29 +127,33 @@ public class appFunkcijas {
                 
             }
         }
-        
     }
+    public void add(String vards, String uzvards, String segvards, String ePasts, String password) {
+        ArrayList<ieraksts> lietotajaIeraksts = new ArrayList<>();
+    }
+        
+    
     public void pierakstisanas() {
         System.out.println("    Tu esi pierakstisanas sadala!   ");
         while(true) {
-        System.out.println("Ievadiet sava konta E-pastu: ");
-        String epastaLauks = answer.nextLine(); 
-        if(epastaLauks.equals(ePasts)) {
+        System.out.print("Ievadiet sava konta Segvardu: ");
+        String SegvardaLauks = answer.nextLine(); 
+        if(SegvardaLauks.equals(segvards)) {
             if(App.colors == 1) {
-                System.out.println("\u001B[32m[E-pasts sakrit]\u001B[0m");
+                System.out.println("\u001B[32m[Segvards sakrit]\u001B[0m");
                 break;
             }
             else{
-                System.out.println("[E-pasts sakrit]");
+                System.out.println("[Segvards sakrit]");
                 break;
             }
         }
         else {
             if(App.colors == 1) {
-            System.out.println("\u001B[31m[E-pasts nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]\u001B[0m");
+            System.out.println("\u001B[31m[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]\u001B[0m");
             }
             else {
-            System.out.println("[E-pasts nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]");
+            System.out.println("[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]");
                 }
             }
         }
