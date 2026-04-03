@@ -1,77 +1,72 @@
-import java.io.IOException; 
-import java.nio.file.*; 
-import java.util.ArrayList; 
-import java.util.List;
-import java.util.function.Function;
-
-class User {
-    private String username;
-    private String password;
-
-    public User(String username, String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public static User fromCsvRow(String row) {
-        String[] parts = row.split(",");
-        if (parts.length >= 2) {
-            return new User(parts[0].trim(), parts[1].trim());
-        }
-        throw new IllegalArgumentException("Invalid CSV row: " + row);
-    }
-
-    
-    public String getUsername() { return username; }
-    public String getPassword() { return password; }
-
-    @Override
-    public String toString() {
-        return "User{username='" + username + "', password='" + password + "'}";
-    }
-}
+import java.io.*;
+import java.util.*;
 
 public class FileHandler {
+    private static final String failaVards = "sarakstsCSV/UserData.csv";
 
-    private final Path filePath;
-    public FileHandler(String fileName) {
-        this.filePath = Paths.get(fileName);
-    }
-
-    public <Data> List<Data> load(Function<String, Data> parser) {
-        List<Data> result = new ArrayList<>();
-        if(!Files.exists(filePath)) {
-            return result;
+    public static void saveUsers (List<Lietotajs> users) {
+        File file = new File(failaVards);
+        try(BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+            writer.write("Vards,Uzvards,Segvards,Epasts,Parole");
+            writer.newLine();
+        for(Lietotajs u : users) {
+            writer.write(u.getVards() + "," + u.getUzvards() + "," + u.getSegvards() + "," + u.getEpasts() + "," + u.getParole() + ",");
+            writer.newLine();
+            }
+        if(App.colors == 1) {
+            System.out.println("\u001B[32m[Lietotajs ir registrets]\u001B[0m");
+            System.out.println(file.getAbsolutePath());
+        } else {
+            System.out.println("[Lietotajs ir registrets]");
+            System.out.println(file.getAbsolutePath());
         }
+        } catch(IOException e) {
+            if(App.colors == 1) {
+            System.out.println("\u001B[31m[Kluda saglabajot lietotaju]\u001B[0m");
+            System.out.println(file.getAbsolutePath());
+        } else {
+            System.out.println("[Kluda saglabajot lietotaju]");
+            System.out.println(file.getAbsolutePath());
+        }
+        }
+    }
+    public static List<Lietotajs> lietotaji() {
+        List<Lietotajs> users = new ArrayList<>();
+        File file = new File(failaVards);
+        try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
+            String line;
+            boolean firstLine = true;
 
-        try {
-            List<String> lines = Files.readAllLines(filePath);
+            while ((line = reader.readLine()) != null) {
+                if(firstLine) {
+                    firstLine = false;
+                    continue;
+                }
 
-            for (int i = 1; i < lines.size(); i++) {
-                String line = lines.get(i).trim();
-                if (!line.isEmpty()) {
-                    result.add(parser.apply(line)); 
+                String[] data = line.split(",", -1);
+                if(data.length == 6) {
+                    Lietotajs u = new Lietotajs(
+                    data[0], data[1], data[2], data[3], data[4]
+                    );
+                    users.add(u);
                 }
             }
-
-        } catch (IOException e) {
-            System.out.println("Couldn't read the file: " + e.getMessage());
+            if(App.colors == 1) {
+            System.out.println("\u001B[32m[Dati ieladeti no csv]\u001B[0m");
+            System.out.println(file.getAbsolutePath());
+            } else {
+            System.out.println("[Dati ieladeti no csv]");
+            System.out.println(file.getAbsolutePath());
         }
-
-        return result;
-    }
-
-
-
-
-    public static void main(String[] args) {
-        FileHandler handler = new FileHandler("users.csv");
-
-        List<User> users = handler.load(User::fromCsvRow);
-
-        for (User u : users) {
-            System.out.println(u);
+        } catch(IOException e) {
+             if(App.colors == 1) {
+            System.out.println("\u001B[31m[Kluda nolasot csv failu]\u001B[0m");
+            System.out.println(file.getAbsolutePath());
+        } else {
+            System.out.println("[Kluda nolasot csv failu]");
+            System.out.println(file.getAbsolutePath());
         }
-
+        }
+        return users;
     }
 }

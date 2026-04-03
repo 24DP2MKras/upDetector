@@ -138,7 +138,7 @@ public class appFunkcijas {
     public void add() {
         Lietotajs jaunsLietotajs = new Lietotajs(this.vards, this.uzvards, this.segvards, this.ePasts, this.parole);
         registracija.add(jaunsLietotajs);
-        System.out.println(registracija);
+        FileHandler.saveUsers(registracija);
     }
         
     
