@@ -123,9 +123,9 @@ public class appFunkcijas {
                     }else {
                         System.out.println("[Lūdzu ievadiet tadu pašu paroli (piemeram: qwertyu7, parbaude: qwertyu7 )!]");
                     }    
-                    }
                 }
-                else {
+            }
+            else {
                 if (App.colors == 1) {
                     System.out.println("\u001B[31m[Lūdzu ievadiet derīgu paroli (piemeram: qwertyu7 )!]\u001B[0m");
                 } else {
@@ -138,7 +138,7 @@ public class appFunkcijas {
     public void add() {
         Lietotajs jaunsLietotajs = new Lietotajs(this.vards, this.uzvards, this.segvards, this.ePasts, this.parole);
         registracija.add(jaunsLietotajs);
-        FileHandler.saveUsers(registracija);
+        CsvFileHandler.addToCSV(registracija);
     }
         
     
@@ -147,24 +147,35 @@ public class appFunkcijas {
         while(true) {
         System.out.print("Ievadiet sava konta Segvardu: ");
         String SegvardaLauks = answer.nextLine(); 
-        if(SegvardaLauks.equals(segvards)) {
-            if(App.colors == 1) {
-                System.out.println("\u001B[32m[Segvards sakrit]\u001B[0m");
-                break;
-            }
-            else{
-                System.out.println("[Segvards sakrit]");
-                break;
-            }
-        }
-        else {
-            if(App.colors == 1) {
-            System.out.println("\u001B[31m[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]\u001B[0m");
-            }
-            else {
-            System.out.println("[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]");
+        if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
+            System.out.print("Ievadiet savu paroli: ");
+            String ParolesLauks = answer.nextLine();
+            if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {
+                RegisteredUserUi ui = new RegisteredUserUi();
+                if(App.colors == 1) {
+                    System.out.println("\u001B[32m[Pierakstisanas veiksmiga!]\u001B[0m");
+                    ui.RegisteredUserUi();
+                } else {
+                    System.out.println("[Pierakstisanas veiksmiga!]");
+                    ui.RegisteredUserUi();
+                }
+            } else {
+                if(App.colors == 1) {
+                    System.out.println("\u001B[31m[Nepareiza parole!]\u001B[0m");
+                } else {
+                    System.out.println("[Nepareiza parole!]");
                 }
             }
+        } else {
+            if(App.colors == 1) {
+                System.out.println("\u001B[31m[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]\u001B[0m");
+            } else {
+                System.out.println("[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]");
+            }
         }
+        }
+    }
+    public void exit() {
+        System.exit(0);
     }
 }

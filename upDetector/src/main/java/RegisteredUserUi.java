@@ -1,6 +1,7 @@
 import java.util.Scanner;
 
 public class RegisteredUserUi {
+    appFunkcijas app = new appFunkcijas();
     public static int colors = 1;
 
      public void RegisteredUserUi(){
@@ -65,9 +66,8 @@ public class RegisteredUserUi {
             }
             break; //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
-
         if (userAnswer.equals("")) {
-            break;
+            app.exit();
             }
         }
     
