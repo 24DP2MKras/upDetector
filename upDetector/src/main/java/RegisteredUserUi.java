@@ -2,10 +2,12 @@ import java.util.Scanner;
 
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
+    App sakums = new App();
     public static int colors = 1;
 
      public void RegisteredUserUi(){
         Scanner answer = new Scanner(System.in);
+        app.clear();
         System.out.println("        -Programma upDetector-      ");
         System.out.println();
         System.out.println("Izvelne");
@@ -19,6 +21,7 @@ public class RegisteredUserUi {
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Vietnes parbaudes redirekcija
+            app.clear();
             System.out.println("Esat vietnes parbaudes sadala!");
             System.out.println("Ierakstat vietni kuru gribat parbaudit");
             System.out.println("Atbilde: ");
@@ -28,6 +31,7 @@ public class RegisteredUserUi {
         }
         if(userAnswer.equals("2")){
             // Te jabut vietnes meklesana redirekcija
+            app.clear();
             System.out.println("Esat vietnes meklesana sadala!");
             System.out.println("Ievadiet vietni, kuru gribat atrast");
             System.out.println("Atbilde: ");
@@ -36,20 +40,21 @@ public class RegisteredUserUi {
         }
         if(userAnswer.equals("3")) {
             //Te jabut Konta redirekcija
+            app.clear();
             System.out.println("Esat sava konta sadala!");
             System.out.println("Konta redigesana (1)");
             System.out.println("Konta dzesana (2)");
             System.out.println("Atbilde: ");
                 userAnswer = answer.nextLine();
             if(userAnswer.equals("1")){
-                int colors = 1;
+                app.clear();
             }
             if(userAnswer.equals("2")){
-                int colors = 0;
+                app.clear();
             }
-            break;
         }
         if(userAnswer.equals("4")) {
+            app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
             System.out.println("    Vai tiesam velaties izrakstities?    ");
             System.out.println("Ja (1)");
@@ -57,14 +62,19 @@ public class RegisteredUserUi {
             System.out.print("Atbilde: ");
                 userAnswer = answer.nextLine();
             if(userAnswer.equals("1")){
-                int colors = 1;
+                colors = 1;
                 System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+                app.clear();
+                sakums.App();
             }
             if(userAnswer.equals("2")) {
-                int colors = 0;
+                colors = 0;
                 System.out.println("[Komanda izpildita]");
+                app.clear();
+                RegisteredUserUi();
+
             }
-            break; //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
+             //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if (userAnswer.equals("")) {
             app.exit();

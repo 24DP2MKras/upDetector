@@ -1,3 +1,4 @@
+import java.io.Console;
 import java.util.*;
 public class appFunkcijas {
     public String vards;
@@ -6,7 +7,6 @@ public class appFunkcijas {
     public String ePasts;
     public String parole;
     public String parolesParbaude;
-
     public List<Lietotajs> registracija; 
 
     public appFunkcijas(){
@@ -15,7 +15,21 @@ public class appFunkcijas {
 
 
     Scanner answer = new Scanner(System.in);
+    
+    // Method to read password securely (hidden input)
+    private String readPassword(String prompt) {
+        Console console = System.console();
+        if (console != null) {
+            char[] passwordChars = console.readPassword(prompt);
+            return new String(passwordChars);
+        } else {
+            // Fallback for environments without console (like some IDEs)
+            System.out.print(prompt);
+            return answer.nextLine();
+        }
+    }
     public void registracija() {
+        clear();
         System.out.println("    Tu esi registracijas sadala!");
         System.out.println();
         while(true) {
@@ -84,7 +98,8 @@ public class appFunkcijas {
         while(true) {
             System.out.println("Ievadiet savu E-pastu!    ");
             String ePasts = answer.nextLine();
-            if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {                this.ePasts = ePasts;
+            if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {                
+                this.ePasts = ePasts;
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -102,11 +117,9 @@ public class appFunkcijas {
             }
         }
         while(true) {
-            System.out.print("Ievadiet savu unikalo paroli!    ");
-            String parole = answer.nextLine();
+            String parole = readPassword("Ievadiet savu unikalo paroli!    ");
             if(parole.matches("^(?=.*\\d)[A-Za-z\\d!@#$]{8,20}$")) {
-                System.out.print("Ievadiet savu unikalo paroli velreiz!   ");
-                String parolesParbaude = answer.nextLine();
+                String parolesParbaude = readPassword("Ievadiet savu unikalo paroli velreiz!   ");
                 if(parole.equals(parolesParbaude)) {
                     this.parole = parole;
                     if (App.colors == 1) {
@@ -143,13 +156,13 @@ public class appFunkcijas {
         
     
     public void pierakstisanas() {
+        clear();
         System.out.println("    Tu esi pierakstisanas sadala!   ");
         while(true) {
         System.out.print("Ievadiet sava konta Segvardu: ");
         String SegvardaLauks = answer.nextLine(); 
         if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
-            System.out.print("Ievadiet savu paroli: ");
-            String ParolesLauks = answer.nextLine();
+            String ParolesLauks = readPassword("Ievadiet savu paroli: ");
             if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {
                 RegisteredUserUi ui = new RegisteredUserUi();
                 if(App.colors == 1) {
@@ -177,5 +190,8 @@ public class appFunkcijas {
     }
     public void exit() {
         System.exit(0);
+    }
+    public void clear() {
+        System.out.print("\033[2J\033[H");
     }
 }
