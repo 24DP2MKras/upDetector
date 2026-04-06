@@ -2,7 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class FileHandler {
-    private static final String failaVards = "sarakstsCSV/UserData.csv";
+    private static final String failaVards = "data/UserData.csv";
 
     public static void saveUsers (List<Lietotajs> users) {
         File file = new File(failaVards);
