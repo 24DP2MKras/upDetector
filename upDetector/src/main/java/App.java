@@ -26,9 +26,10 @@ public class App {
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija
             appFunkcijas register = new appFunkcijas();
-            register.registracija();
-            register.add();
+            Lietotajs newUser = register.registracija();
+            register.add(newUser);
             App();
+            
             
         }
         if(userAnswer.equals("2")) {
@@ -43,6 +44,7 @@ public class App {
             System.out.println("    Vai velies tekstu ar krasam?   ");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
+            System.out.println("Atpakal (4)");
             System.out.print("Atbilde: ");
                 userAnswer = answer.nextLine();
             if(userAnswer.equals("1")){
@@ -57,7 +59,10 @@ public class App {
                 app.clear();
                 App();
             }
-            break; //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
+            if(userAnswer.equals("4")){
+                break;
+            }
+             //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if (userAnswer.equals("4")) {
             //opcija iet uz sakumu jabut seit
@@ -69,6 +74,7 @@ public class App {
             break;
             }
         }
+        
     }
     
     public static void main(String[] args) {

@@ -2,10 +2,10 @@ import java.io.Console;
 import java.util.*;
 public class appFunkcijas {
     
-    public List<Lietotajs> registracija; 
+    public List<Lietotajs> users; 
 
     public appFunkcijas(){
-        this.registracija = new ArrayList<>();
+        this.users = new ArrayList<>();
     }
 
 
@@ -23,15 +23,15 @@ public class appFunkcijas {
             return answer.nextLine();
         }
     }
-    public void registracija() {
+    public Lietotajs registracija() {
         clear();
         System.out.println("    Tu esi registracijas sadala!");
         System.out.println();
+        String vards = "", uzvards = "", segvards = "", ePasts = "", parole = "";
         while(true) {
             System.out.print("Ievadiet savu vardu!    ");
-            String vards = answer.nextLine();
+            vards = answer.nextLine();
             if(vards.matches("^[A-Za-zĀ-ž]{3,50}$")) {
-                this.vards = vards;
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -45,14 +45,12 @@ public class appFunkcijas {
                 } else {
                     System.out.println("[Lūdzu ievadiet derīgu vārdu (piemeram: Janis)!]");
                 }
-                
             }
         }
         while(true) {
             System.out.print("Ievadiet savu uzvardu!    ");
-            String uzvards = answer.nextLine();
+            uzvards = answer.nextLine();
             if(uzvards.matches("^[A-Za-zĀ-ž]{4,60}$")) {
-                this.uzvards = uzvards;
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -66,14 +64,12 @@ public class appFunkcijas {
                 } else {
                     System.out.println("[Lūdzu ievadiet derīgu uzvārdu (piemeram: Bērziņš)!]");
                 }
-                
             }
         }
         while(true) {
             System.out.println("Ievadiet savu unikalo segvardu!    ");
-            String segvards = answer.nextLine();
+            segvards = answer.nextLine();
             if(segvards.matches("^(?![!@#$]+$)[A-Za-z0-9!@#$]{4,20}$")) {
-                this.segvards = segvards;
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -87,14 +83,12 @@ public class appFunkcijas {
                 } else {
                     System.out.println("[Lūdzu ievadiet derīgu segvārdu (piemeram: ShadowX99)!]");
                 }
-                
             }
         }
         while(true) {
             System.out.println("Ievadiet savu E-pastu!    ");
-            String ePasts = answer.nextLine();
+            ePasts = answer.nextLine();
             if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {                
-                this.ePasts = ePasts;
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -108,15 +102,13 @@ public class appFunkcijas {
                 } else {
                     System.out.println("[Lūdzu ievadiet derīgu E-pastu (piemeram: example@gmail.com )!]");
                 }
-                
             }
         }
         while(true) {
-            String parole = readPassword("Ievadiet savu unikalo paroli!    ");
+            parole = readPassword("Ievadiet savu unikalo paroli!    ");
             if(parole.matches("^(?=.*\\d)[A-Za-z\\d!@#$]{8,20}$")) {
                 String parolesParbaude = readPassword("Ievadiet savu unikalo paroli velreiz!   ");
                 if(parole.equals(parolesParbaude)) {
-                    this.parole = parole;
                     if (App.colors == 1) {
                         System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                         break;
@@ -139,14 +131,13 @@ public class appFunkcijas {
                 } else {
                     System.out.println("[Lūdzu ievadiet derīgu paroli (piemeram: qwertyu7 )!]");
                 }
-                
             }
         }
+        return new Lietotajs(vards, uzvards, segvards, ePasts, parole);
     }
-    public void add() {
-        Lietotajs jaunsLietotajs = new Lietotajs(this.vards, this.uzvards, this.segvards, this.ePasts, this.parole);
-        registracija.add(jaunsLietotajs);
-        CsvFileHandler.addToCSV(registracija);
+    public void add(Lietotajs user) {
+        users.add(user);
+        CsvFileHandler.addToCSV(users);
     }
         
     
