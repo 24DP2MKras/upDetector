@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
+    httpPing pingTests = new httpPing();
     public static int colors = 1;
 
      public void RegisteredUserUi(){
@@ -13,9 +14,9 @@ public class RegisteredUserUi {
         System.out.println("Izvelne");
         while(true) {
         System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības)");
-        System.out.println("Vietnes parbaude (1)  ");
-        System.out.println("Vietnes meklesana (2)");
-        System.out.println("Konts (3)  ");
+        System.out.println("Vietnes parbaude (1) ");
+        System.out.println("Vietnes meklesana (2) ");
+        System.out.println("Konts (3) ");
         System.out.println("Izrakstities (4)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
@@ -24,10 +25,17 @@ public class RegisteredUserUi {
             app.clear();
             System.out.println("Esat vietnes parbaudes sadala!");
             System.out.println("Ierakstat vietni kuru gribat parbaudit");
-            System.out.println("Atbilde: ");
-                userAnswer = answer.nextLine();
+            System.out.print("Atbilde: ");
+            userAnswer = answer.nextLine();
+            pingTests.httpPinger(userAnswer);
+            System.out.println();
+            System.out.print("Lai izietu spied ENTER ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("")) {
+                app.clear();
+                exit();
+            }
             
-            break;
         }
         if(userAnswer.equals("2")){
             // Te jabut vietnes meklesana redirekcija
@@ -85,5 +93,9 @@ public class RegisteredUserUi {
      public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();
         ui.RegisteredUserUi();
+     }
+
+     public void exit() {
+        RegisteredUserUi();
      }
 }

@@ -28,6 +28,6 @@ public class httpPing {
     }
     public static void main(String[] args) {
         httpPing ping = new httpPing();
-        ping.httpPinger("https://githbb.com");
+        ping.httpPinger("");
 }
 }
