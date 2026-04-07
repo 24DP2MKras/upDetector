@@ -1,10 +1,12 @@
 import java.util.Scanner;
-
+import java.util.List;
+import java.io.File;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
     httpPing pingTests = new httpPing();
     public static int colors = 1;
+
 
      public void RegisteredUserUi(){
         Scanner answer = new Scanner(System.in);
@@ -59,8 +61,34 @@ public class RegisteredUserUi {
             }
             if(userAnswer.equals("2")){
                 app.clear();
+                System.out.println("Esat sava konta dzesanas sadala!");
+                System.out.println("Vai tiesam velaties dzest savu kontu?");
+                System.out.println("Ja (1)");
+                System.out.println("Ne (2)");
+                System.out.println("Atbilde: ");
+                userAnswer = answer.nextLine();
+                if(userAnswer.equals("1")){
+                    System.out.println("Ievadiet savu Segvardu!    ");
+                    String segvards = answer.nextLine();
+                    System.out.println("Ievadiet savu paroli!    ");
+                    String parole = answer.nextLine();
+                    if(CsvFileHandler.checkUserLogin(segvards, parole)){
+                        File currentDir = new File(System.getProperty("user.dir"));
+                        File dataFolder = findDataFolder(currentDir);
+                        if(dataFolder != null){
+                            String filePath = new File(dataFolder, "UserData.csv").getAbsolutePath();
+                            CsvFileHandler.removeFromCSV(filePath, segvards, 2);
+                        }
+                    } else {
+                        if(colors == 1){
+                            System.out.println("\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m");
+                        } else {
+                            System.out.println("[Nepareizs segvards vai parole!]");
+                        }
+                    }
             }
         }
+    }
         if(userAnswer.equals("4")) {
             app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
@@ -88,8 +116,10 @@ public class RegisteredUserUi {
             app.exit();
             }
         }
+        
     
      }
+     
      public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();
         ui.RegisteredUserUi();
@@ -98,4 +128,44 @@ public class RegisteredUserUi {
      public void exit() {
         RegisteredUserUi();
      }
+     
+     private static File findDataFolder(File startDir) {
+        // First, search UP the directory tree
+        File current = startDir;
+        for (int i = 0; i < 10; i++) {
+            File data = new File(current, "data");
+            if (data.exists() && data.isDirectory()) {
+                return data;
+            }
+            if (current.getParentFile() != null) {
+                current = current.getParentFile();
+            } else {
+                break;
+            }
+        }
+        
+        // Then, search DOWN the directory tree
+        return findDataFolderDown(startDir);
+    }
+    
+    private static File findDataFolderDown(File dir) {
+        File data = new File(dir, "data");
+        if (data.exists() && data.isDirectory()) {
+            return data;
+        }
+        
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    File found = findDataFolderDown(file);
+                    if (found != null) {
+                        return found;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+     
 }
