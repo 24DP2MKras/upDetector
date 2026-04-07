@@ -16,7 +16,7 @@ public class App {
         System.out.println();
         System.out.println("Izvelne");
         while(true) {
-        System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības)");
+        System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)");
         System.out.println("Registresanas (1)  ");
         System.out.println("Pierakstisanas (2)  ");
         System.out.println("Krasu shema (3)");

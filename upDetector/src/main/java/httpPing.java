@@ -23,7 +23,7 @@ public class httpPing {
             System.out.println("Time: " + duration + " ms");
 
         } catch (Exception e) {
-            System.out.println("\u001B[31mKÄŒÅ«da: mÄjaslapa nav sasniedzama! \u001B[0m");
+            System.out.println("\u001B[31m[Kluda: majaslapa nav sasniedzama!]\u001B[0m");
         }
     }
     public static void main(String[] args) {

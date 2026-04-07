@@ -329,7 +329,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error checking login: " + e.getMessage());
+            System.out.println("Kluda pārbaudot lietotāja autorizāciju: " + e.getMessage());
         }
         return false;
     }

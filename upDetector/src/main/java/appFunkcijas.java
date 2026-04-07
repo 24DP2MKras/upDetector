@@ -41,9 +41,9 @@ public class appFunkcijas {
                 }
             } else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu vārdu (piemeram: Janis)!]\u001B[0m");
+                    System.out.println("\u001B[31m[Ludzu ievadiet derigu vardu (piemeram: Janis)!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu vārdu (piemeram: Janis)!]");
+                    System.out.println("[Ludzu ievadiet derigu vardu (piemeram: Janis)!]");
                 }
             }
         }
@@ -60,9 +60,9 @@ public class appFunkcijas {
                 }
             } else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu uzvārdu (piemeram: Bērziņš)!]\u001B[0m");
+                    System.out.println("\u001B[31m[Ludzu ievadiet derigu uzvardu (piemeram: Berzins)!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu uzvārdu (piemeram: Bērziņš)!]");
+                    System.out.println("[LLudzu ievadiet derigu uzvardu (piemeram: Berzins)!]");
                 }
             }
         }
@@ -79,9 +79,9 @@ public class appFunkcijas {
                 }
             } else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu segvārdu (piemeram: ShadowX99)!]\u001B[0m");
+                    System.out.println("\u001B[31m[Ludzu ievadiet derigu segvardu (piemeram: ShadowX99)!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu segvārdu (piemeram: ShadowX99)!]");
+                    System.out.println("[Ludzu ievadiet derigu segvardu (piemeram: ShadowX99)!]");
                 }
             }
         }
@@ -98,9 +98,9 @@ public class appFunkcijas {
                 }
             } else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu E-pastu (piemeram: example@gmail.com )!]\u001B[0m");
+                    System.out.println("\u001B[31m[Ludzu ievadiet derigu E-pastu (piemeram: example@gmail.com )!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu E-pastu (piemeram: example@gmail.com )!]");
+                    System.out.println("[LLudzu ievadiet derigu E-pastu (piemeram: example@gmail.com )!]");
                 }
             }
         }
@@ -119,17 +119,17 @@ public class appFunkcijas {
                 }
                 else {
                     if (App.colors == 1) {
-                        System.out.println("\u001B[31m[Lūdzu ievadiet tadu pašu paroli (piemeram: qwertyu7, parbaude: qwertyu7 )!]\u001B[0m");
+                        System.out.println("\u001B[31m[Ludzu ievadiet tadu pasu paroli (piemeram: qwertyu7, parbaude: qwertyu7 )!]\u001B[0m");
                     }else {
-                        System.out.println("[Lūdzu ievadiet tadu pašu paroli (piemeram: qwertyu7, parbaude: qwertyu7 )!]");
+                        System.out.println("[Ludzu ievadiet tadu pasu paroli (piemeram: qwertyu7, parbaude: qwertyu7 )!]");
                     }    
                 }
             }
             else {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Lūdzu ievadiet derīgu paroli (piemeram: qwertyu7 )!]\u001B[0m");
+                    System.out.println("\u001B[31m[Ludzu ievadiet derigu paroli (piemeram: qwertyu7 )!]\u001B[0m");
                 } else {
-                    System.out.println("[Lūdzu ievadiet derīgu paroli (piemeram: qwertyu7 )!]");
+                    System.out.println("[LLudzu ievadiet derigu paroli (piemeram: qwertyu7 )!]");
                 }
             }
         }
