@@ -178,7 +178,7 @@ public class appFunkcijas {
     }
     public void add(Lietotajs user) {
         users.add(user);
-        CsvFileHandler.addToCSV(users);
+        CsvFileHandler.saveLine("UserData.csv", user.toString());
     }
         
     

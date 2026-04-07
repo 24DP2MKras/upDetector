@@ -7,27 +7,65 @@ import java.util.HashMap;
 
 public class CsvFileHandler {
 
+    // Helper method to find the data folder
+    private static File findDataFolder(File startDir) {
+        File current = startDir;
+        for (int i = 0; i < 10; i++) {
+            File data = new File(current, "data");
+            if (data.exists() && data.isDirectory()) {
+                return data;
+            }
+            if (current.getParentFile() != null) {
+                current = current.getParentFile();
+            } else {
+                break;
+            }
+        }
+        return findDataFolderDown(startDir);
+    }
+
+    private static File findDataFolderDown(File dir) {
+        File data = new File(dir, "data");
+        if (data.exists() && data.isDirectory()) {
+            return data;
+        }
+        File[] files = dir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                if (file.isDirectory()) {
+                    File found = findDataFolderDown(file);
+                    if (found != null) {
+                        return found;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     // Save users list to CSV (compatible with appFunkcijas)
     public static void addUsersToCSV(List<Lietotajs> users, String fileName) {
         try {
-            // Find the project root by looking for the data folder
-            String filePath = new File("../data", fileName).getAbsolutePath();
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                System.out.println("Data folder not found");
+                return;
+            }
+            String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 if (!file.exists()) {
-                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole");
+                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
                     writer.newLine();
                 }
                 for(Lietotajs u : users) {
-                    writer.write(u.getVards() + "," + u.getUzvards() + "," + u.getSegvards() + "," + u.getEpasts() + "," + u.getParole());
+                    writer.write(u.toString());
                     writer.newLine();
                 }
                 if(App.colors == 1) {
                     System.out.println("\u001B[32m[Lietotajs ir registrets]\u001B[0m");
-                    System.out.println(file.getAbsolutePath());
                 } else {
                     System.out.println("[Lietotajs ir registrets]");
-                    System.out.println(file.getAbsolutePath());
                 }
             }
         } catch(IOException e) {
@@ -55,21 +93,45 @@ public class CsvFileHandler {
     // Simple method to add a line to any CSV file
     public static void saveLine(String fileName, String data) {
         try {
-            String filePath = new File("../data", fileName).getAbsolutePath();
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                System.out.println("Data folder not found");
+                return;
+            }
+            String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                // Add header for UserData.csv if it doesn't exist
+                if (!file.exists() && fileName.equals("UserData.csv")) {
+                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
+                    writer.newLine();
+                }
                 writer.write(data);
                 writer.newLine();
             }
+            if(App.colors == 1) {
+                System.out.println("\u001B[32m[Dati saglabati]\u001B[0m");
+            } else {
+                System.out.println("[Dati saglabati]");
+            }
         } catch(IOException e) {
-            System.out.println("Error saving: " + e.getMessage());
+            if(App.colors == 1) {
+                System.out.println("\u001B[31m[Kluda saglabajot: " + e.getMessage() + "]\u001B[0m");
+            } else {
+                System.out.println("[Kluda saglabajot: " + e.getMessage() + "]");
+            }
         }
     }
 
     // Remove record from CSV file by identifier (any field index)
     public static void removeFromCSV(String fileName, String identifier, int fieldIndex) {
         try {
-            String filePath = new File("../data", fileName).getAbsolutePath();
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                System.out.println("Data folder not found");
+                return;
+            }
+            String filePath = new File(dataFolder, fileName).getAbsolutePath();
             String tempFile = filePath.replace(".csv", "_temp.csv");
             try (BufferedReader br = new BufferedReader(new FileReader(filePath));
                  PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(tempFile)))) {
@@ -121,7 +183,12 @@ public class CsvFileHandler {
     // Edit record in CSV file by identifier
     public static void editRecord(String fileName, String identifier, int fieldIndex, String[] fieldNames) {
         try {
-            String filePath = new File("../data", fileName).getAbsolutePath();
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                System.out.println("Data folder not found");
+                return;
+            }
+            String filePath = new File(dataFolder, fileName).getAbsolutePath();
             String tempFile = filePath.replace(".csv", "_temp.csv");
 
             try (BufferedReader br = new BufferedReader(new FileReader(filePath));
@@ -232,7 +299,12 @@ public class CsvFileHandler {
     // Read all records from CSV file
     public static void readCSV(String fileName) {
         try {
-            String filePath = new File("../data", fileName).getAbsolutePath();
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                System.out.println("Data folder not found");
+                return;
+            }
+            String filePath = new File(dataFolder, fileName).getAbsolutePath();
             try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
                 String line;
                 while ((line = br.readLine()) != null) {
@@ -252,7 +324,11 @@ public class CsvFileHandler {
     // Check if a user exists by segvards
     public static boolean checkUserExists(String segvards, String fileName) {
         try {
-            File file = new File("../data", fileName);
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                return false;
+            }
+            File file = new File(dataFolder, fileName);
             if (!file.exists()) {
                 return false;
             }
@@ -278,8 +354,8 @@ public class CsvFileHandler {
     // List all CSV files in the data folder
     public static void listCsvFiles() {
         try {
-            File dataFolder = new File("../data");
-            if (!dataFolder.exists() || !dataFolder.isDirectory()) {
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null || !dataFolder.isDirectory()) {
                 System.out.println("Data folder not found");
                 return;
             }
@@ -300,7 +376,11 @@ public class CsvFileHandler {
     // Check if user login is valid (segvards and parole match)
     public static boolean checkUserLogin(String segvards, String parole, String fileName) {
         try {
-            File file = new File("../data", fileName);
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                return false;
+            }
+            File file = new File(dataFolder, fileName);
             if (!file.exists()) {
                 return false;
             }
@@ -328,7 +408,11 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadUsers() {
         List<Map<String, String>> users = new ArrayList<>();
         try {
-            File file = new File("../data", "UserData.csv");
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                return users;
+            }
+            File file = new File(dataFolder, "UserData.csv");
             if (!file.exists()) return users;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line = br.readLine(); // Skip header
@@ -355,7 +439,11 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadWebsites() {
         List<Map<String, String>> websites = new ArrayList<>();
         try {
-            File file = new File("../data", "Vietnes.csv");
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                return websites;
+            }
+            File file = new File(dataFolder, "Vietnes.csv");
             if (!file.exists()) return websites;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line = br.readLine(); // Skip header
@@ -384,7 +472,11 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadFavorites() {
         List<Map<String, String>> favorites = new ArrayList<>();
         try {
-            File file = new File("../data", "MilakasVietnes.csv");
+            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            if (dataFolder == null) {
+                return favorites;
+            }
+            File file = new File(dataFolder, "MilakasVietnes.csv");
             if (!file.exists()) return favorites;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
                 String line = br.readLine(); // Skip header
