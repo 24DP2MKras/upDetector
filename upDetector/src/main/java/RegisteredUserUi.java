@@ -4,8 +4,17 @@ import java.io.File;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
-    httpPing pingTests = new httpPing();
+    HttpPing pingTests = new HttpPing();
     public static int colors = 1;
+    private String currentUsername;
+
+    public RegisteredUserUi(String username) {
+        this.currentUsername = username;
+    }
+
+    public RegisteredUserUi() {
+        this.currentUsername = "unknown";
+    }
 
 
      public void RegisteredUserUi(){
@@ -29,7 +38,8 @@ public class RegisteredUserUi {
             System.out.println("Ierakstat vietni kuru gribat parbaudit");
             System.out.print("Atbilde: ");
             userAnswer = answer.nextLine();
-            pingTests.httpPinger(userAnswer);
+            pingTests.httpPinger(userAnswer, currentUsername);
+            System.out.println(pingTests);
             System.out.println();
             System.out.print("Lai izietu spied ENTER ");
             userAnswer = answer.nextLine();
@@ -43,9 +53,9 @@ public class RegisteredUserUi {
             // Te jabut vietnes meklesana redirekcija
             app.clear();
             System.out.println("Esat vietnes meklesana sadala!");
-            System.out.println("Ievadiet vietni, kuru gribat atrast");
-            System.out.println("Atbilde: ");
-                userAnswer = answer.nextLine();
+            System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
+            System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
+            
 
         }
         if(userAnswer.equals("3")) {

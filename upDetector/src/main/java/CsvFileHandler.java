@@ -389,7 +389,7 @@ public class CsvFileHandler {
                 boolean firstLine = true;
                 while ((line = br.readLine()) != null) {
                     if (firstLine) {
-                        firstLine = false; // Skip header
+                        firstLine = false;
                         continue;
                     }
                     String[] parts = line.split(",");
