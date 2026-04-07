@@ -249,43 +249,6 @@ public class CsvFileHandler {
         }
     }
 
-    // Write a full Vietnes.csv file from a list of lines (overwrites existing file)
-    public static void writeVietnes(List<String> lines) {
-        String fileName = "Vietnes.csv";
-        try {
-            String filePath = new File("../data", fileName).getAbsolutePath();
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
-                for (String line : lines) {
-                    writer.write(line);
-                    writer.newLine();
-                }
-                System.out.println("Wrote " + lines.size() + " line(s) to " + fileName);
-            }
-        } catch (IOException e) {
-            System.out.println("Error writing " + fileName + ": " + e.getMessage());
-        }
-    }
-
-    // Append a single Vietnes row
-    public static void appendVietne(String line) {
-        saveLine("Vietnes.csv", line);
-    }
-
-    // Read Vietnes.csv
-    public static void readVietnes() {
-        readCSV("Vietnes.csv");
-    }
-
-    // Delete rows from Vietnes.csv by matching one field
-    public static void deleteVietne(String identifier, int fieldIndex) {
-        removeFromCSV("Vietnes.csv", identifier, fieldIndex);
-    }
-
-    // Edit a row in Vietnes.csv by matching one field, using interactive field selection
-    public static void editVietne(String identifier, int fieldIndex, String[] fieldNames) {
-        editRecord("Vietnes.csv", identifier, fieldIndex, fieldNames);
-    }
-
     // Check if a user exists by segvards
     public static boolean checkUserExists(String segvards, String fileName) {
         try {
