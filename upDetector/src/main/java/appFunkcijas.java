@@ -1,12 +1,7 @@
 import java.io.Console;
 import java.util.*;
 public class appFunkcijas {
-    public String vards;
-    public String uzvards;
-    public String segvards;
-    public String ePasts;
-    public String parole;
-    public String parolesParbaude;
+    
     public List<Lietotajs> registracija; 
 
     public appFunkcijas(){
