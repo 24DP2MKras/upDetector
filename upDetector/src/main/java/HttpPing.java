@@ -8,42 +8,28 @@ public class HttpPing {
     private String segvards;
     private String ping;
     private String timestamp;
-    private URL urlString;
+    private String urlString;
 
-    public void httpPinger(String urlString, String username) {
-        
-        try {
-            URI uri = new URI(urlString);
-            this.urlString = uri.toURL();
-
-            long start = System.currentTimeMillis();
-            HttpURLConnection conn = (HttpURLConnection) this.urlString.openConnection();
-            conn.setRequestMethod("GET");
-            conn.connect();
-
-            int code = conn.getResponseCode();
-            long end = System.currentTimeMillis();
-
-            this.ping = String.valueOf(end - start);
-            this.timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            this.segvards = username;
-
-            System.out.println("Code: " + code);
-            System.out.println("Time: " + this.ping + " ms");
-
-        } catch (Exception e) {
-            System.out.println("\u001B[31mKluda: majaslapa nav sasniedzama! \u001B[0m");
-        }
+    public HttpPing(String segvards, String ping, String timestamp, String urlString) {
+        this.segvards = segvards;
+        this.ping = ping;
+        this.timestamp = timestamp;
+        this.urlString = urlString;
     }
-
-    @Override
     public String toString() {
-        return this.segvards + "," + this.ping + "ms" + "," + this.timestamp + "," + this.urlString;
+        return "|Atrums: " + this.ping + " ms " + "|Datums/Laiks: " + this.timestamp + "|segvards: " + segvards + " |";
     }
-
-    public static void main(String[] args) {
-        HttpPing ping = new HttpPing();
-        ping.httpPinger("https://github.com", "testuser");
-        System.out.println(ping);
+    public String getSegVards() {
+        return this.segvards;
     }
+    public String getPing() { 
+        return this.ping; 
+    }
+    public String getTimeStamp() { 
+        return this.timestamp; 
+    }
+    public String getUrlString() { 
+        return this.urlString; 
+    }
+    
 }

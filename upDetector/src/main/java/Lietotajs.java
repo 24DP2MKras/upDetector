@@ -16,9 +16,6 @@ public class Lietotajs {
         this.parole = parole;
         this.timestamp = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
     }
-    public Lietotajs() {
-        this.segvards = segvards;
-    }
     public String toString() {
     return this.vards + "," + this.uzvards + "," + this.segvards + "," + this.ePasts + "," + this.parole + "," + this.timestamp;
     }

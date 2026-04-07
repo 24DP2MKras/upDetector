@@ -4,7 +4,7 @@ import java.io.File;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
-    HttpPing pingTests = new HttpPing();
+    RegisteredUserFunkcijas pingTests = new RegisteredUserFunkcijas();
     public static int colors = 1;
     private String currentUsername;
 
@@ -55,6 +55,10 @@ public class RegisteredUserUi {
             System.out.println("Esat vietnes meklesana sadala!");
             System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
             System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
+            userAnswer = answer.nextLine();
+            pingTests.httpPinger(userAnswer, currentUsername);
+            HttpPing ieraksts = pingTests.pedejoReiziSkatits();
+            System.out.println(ieraksts);
             
 
         }
