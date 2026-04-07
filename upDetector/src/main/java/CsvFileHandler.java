@@ -19,11 +19,11 @@ public class CsvFileHandler {
             File file = new File(filePath);
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 if (!file.exists()) {
-                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole");
+                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
                     writer.newLine();
                 }
                 for(Lietotajs u : users) {
-                    writer.write(u.getVards() + "," + u.getUzvards() + "," + u.getSegvards() + "," + u.getEpasts() + "," + u.getParole());
+                    writer.write(u.getVards() + "," + u.getUzvards() + "," + u.getSegvards() + "," + u.getEpasts() + "," + u.getParole() + "," + u.getTimestamp());
                     writer.newLine();
                 }
                 if(App.colors == 1) {
