@@ -96,6 +96,7 @@ public class RegisteredUserUi {
                         }
                     }
             }
+            sakums.App();
         }
     }
         if(userAnswer.equals("4")) {
