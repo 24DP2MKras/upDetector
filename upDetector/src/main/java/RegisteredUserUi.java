@@ -1,12 +1,12 @@
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.List;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
@@ -128,6 +128,18 @@ public class RegisteredUserUi {
             pingTests.httpPinger(userAnswer, currentSegvards);
             System.out.println(pingTests);
             System.out.println();
+            System.out.println("Vai gribat pievienot so vietni milakajam vietnem?");
+            System.out.println("Ja (1)");
+            System.out.println("Ne (2)");
+            System.out.print("Atbilde: ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("1")){
+                HttpPing ieraksts1 = pingTests.pedejoReiziSkatits1();
+                
+            }
+            if(userAnswer.equals("2")){
+                System.out.println("Vietne nav pievienota milakajam vietnem!");
+            }
             System.out.print("Lai izietu spied ENTER ");
             userAnswer = answer.nextLine();
             if(userAnswer.equals("")) {

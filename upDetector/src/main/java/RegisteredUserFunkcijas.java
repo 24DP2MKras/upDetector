@@ -50,10 +50,18 @@ public class RegisteredUserFunkcijas {
         CsvFileHandler.saveLine("Vietnes.csv", ieraksts.toString());
         return result;
     }
+    public HttpPing pedejoReiziSkatits1() {
+        HttpPing result = new HttpPing(segvards, ping, timestamp, urlString.toString());
+        CsvFileHandler.saveLine("MilakasVietnes.csv", ieraksts.toString1());
+        return result;
+    }
 
      @Override
     public String toString() {
         return "|Atrums: " + this.ping + " ms " + "|Datums/Laiks: " + this.timestamp + "|segvards: " + segvards + " |";
         
+    }
+    public String toString1(){
+        return "|Atrums: " + this.ping + " ms " + "|Nosaukums: " + this.urlString  + "|segvards: " + segvards + " |";
     }
 }
