@@ -1,8 +1,3 @@
-import java.net.HttpURLConnection;
-import java.net.URI;
-import java.net.URL;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 public class HttpPing {
     private String segvards;
@@ -18,6 +13,9 @@ public class HttpPing {
     }
     public String toString() {
         return "|Atrums: " + this.ping + " ms " + "|Datums/Laiks: " + this.timestamp + "|segvards: " + segvards + " |";
+    }
+    public String toString1() {
+    return "|Atrums: " + this.ping + " ms " + "|Nosaukums: " + this.urlString + "|segvards: " + this.segvards + " |";
     }
     public String getSegVards() {
         return this.segvards;
