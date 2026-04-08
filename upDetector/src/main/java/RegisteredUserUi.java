@@ -175,14 +175,27 @@ public class RegisteredUserUi {
                         System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
                 String editChoice = answer.nextLine();
                     int fieldIndex = -1;
-                    switch (editChoice)
-                    { case "1" -> fieldIndex = 0;
-                        case "2" -> fieldIndex = 1;
-                        case "3" -> fieldIndex = 2;
-                        case "4" -> fieldIndex = 3;
-                        case "5" -> fieldIndex = 4;
-                        default -> System.out.println("Nederiga atbilde!");
-                    } if (fieldIndex != -1) {
+                    switch (editChoice){
+                    case "1":
+                        fieldIndex = 0;
+                        break;
+                    case "2":
+                        fieldIndex = 1;
+                        break;
+                    case "3": 
+                        fieldIndex = 2;
+                        break;
+                    case "4":
+                        fieldIndex = 3;
+                        break;
+                    case "5":
+                        fieldIndex = 4;
+                        break;
+                    default:
+                        System.out.println("Nederiga atbilde!");
+                        break;
+                    }
+                    if (fieldIndex != -1) {
                     System.out.print("Ievadiet jauno vertibu: ");
                     String newValue = answer.nextLine();
                     updateUserField(fieldIndex, newValue);
