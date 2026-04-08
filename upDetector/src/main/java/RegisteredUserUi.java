@@ -161,6 +161,8 @@ public class RegisteredUserUi {
             System.out.println("Konta dzesana (2)");
             System.out.println("Atbilde: ");
                 userAnswer = answer.nextLine();
+
+
             if(userAnswer.equals("1")){
                 System.out.print("Ievadiet savu segvardu lai apstiprinatu: ");
                 String enteredSegvards = answer.nextLine();
@@ -199,39 +201,14 @@ public class RegisteredUserUi {
                     System.out.print("Ievadiet jauno vertibu: ");
                     String newValue = answer.nextLine();
                     updateUserField(fieldIndex, newValue);
-                    } 
-                }
-                    if (userAnswer.equals("2")) {
-                    app.clear();
-                    System.out.println("Esat sava konta dzesanas sadala!");
-                    System.out.println("Vai tiesam velaties dzest savu kontu?"); 
-                    System.out.println("Ja (1)"); System.out.println("Ne (2)");
-                    System.out.print("Atbilde: ");
-                    String deleteChoice = answer.nextLine();
-                    if (deleteChoice.equals("1")) {
-                    System.out.println("Ievadiet savu Segvardu! ");
-                    String segvards = answer.nextLine();
-                    System.out.println("Ievadiet savu paroli! ");
-                    String parole = answer.nextLine(); 
-                    if (CsvFileHandler.checkUserLogin(segvards, parole)) { 
-                        this.currentSegvards = segvards;
-                        this.parole = parole;
-                    File currentDir = new File(System.getProperty("user.dir")); 
-                    File dataFolder = findDataFolder(currentDir);
-                    if (dataFolder != null) {
-                    String filePath = new File(dataFolder, "UserData.csv").getAbsolutePath();
-                    CsvFileHandler.removeFromCSV(filePath, segvards, 2); } }
-                    else { 
-                        if (colors == 1) {
-                            System.out.println("\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m");
-                        }
-                        else { 
-                            System.out.println("[Nepareizs segvards vai parole!]");
+                    if(fieldIndex == 2) {
+                        this.currentSegvards = newValue;
+                    }
+                    if(fieldIndex == 4) {
+                        this.parole = newValue;
                         }
                     } 
-                }
-            }
-                    
+                }            
         }
                 
             }
