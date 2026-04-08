@@ -59,6 +59,12 @@ public class RegisteredUserUi {
             pingTests.httpPinger(userAnswer, currentUsername);
             HttpPing ieraksts = pingTests.pedejoReiziSkatits();
             System.out.println(ieraksts);
+            System.out.println();
+            System.out.print("Spied ENTER lai atgrieztos uz sakumu: ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("")) {
+                RegisteredUserUi();
+            }
             
 
         }
