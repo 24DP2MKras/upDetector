@@ -6,7 +6,7 @@ import java.util.*;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
-    httpPing pingTests = new httpPing();
+    HttpPing pingTests = new HttpPing();
     public static int colors = 1;
     private String currentUserSegvards;
     private void updateUserField(int fieldIndex, String newValue) {
