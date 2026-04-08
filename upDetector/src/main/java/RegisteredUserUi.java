@@ -87,12 +87,7 @@ public class RegisteredUserUi {
                     System.out.println("Ievadiet savu paroli!    ");
                     String parole = answer.nextLine();
                     if(CsvFileHandler.checkUserLogin(segvards, parole)){
-                        File currentDir = new File(System.getProperty("user.dir"));
-                        File dataFolder = findDataFolder(currentDir);
-                        if(dataFolder != null){
-                            String filePath = new File(dataFolder, "UserData.csv").getAbsolutePath();
-                            CsvFileHandler.removeFromCSV(filePath, segvards, 2);
-                        }
+                        CsvFileHandler.removeFromCSV("UserData.csv", segvards, 2);
                     } else {
                         if(colors == 1){
                             System.out.println("\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m");
