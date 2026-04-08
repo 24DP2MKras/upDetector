@@ -77,13 +77,14 @@ public class RegisteredUserUi {
     }
     }
 
-    public RegisteredUserUi(String username) {
+    public RegisteredUserUi(String username, String parole) {
         this.currentSegvards = username;
+        this.parole =  parole;
     }
 
     public RegisteredUserUi() {
         this.currentSegvards = "unknown";
-        this.parole = "";
+        this.parole = " ";
     }
 
 

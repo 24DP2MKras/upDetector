@@ -191,7 +191,7 @@ public class appFunkcijas {
         if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
             String ParolesLauks = readPassword("Ievadiet savu paroli: ");
             if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {
-                RegisteredUserUi ui = new RegisteredUserUi(SegvardaLauks);
+                RegisteredUserUi ui = new RegisteredUserUi(SegvardaLauks, ParolesLauks);
                 if(App.colors == 1) {
                     System.out.println("\u001B[32m[Pierakstisanas veiksmiga!]\u001B[0m");
                     ui.RegisteredUserUi();
