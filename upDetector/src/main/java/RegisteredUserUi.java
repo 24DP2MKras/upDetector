@@ -83,6 +83,7 @@ public class RegisteredUserUi {
 
     public RegisteredUserUi() {
         this.currentSegvards = "unknown";
+        this.parole = "";
     }
 
 
@@ -171,7 +172,7 @@ public class RegisteredUserUi {
                 } else {
                     System.out.println("Ievadier sava konta paroli lai apstiprinatu: ");
                     String enteredParole = answer.nextLine();
-                    if(!enteredParole.trim().equals(this.parole.trim())) {
+                    if(this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
                         System.out.println("Nepareiza parole");
                     } else {
                         System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
