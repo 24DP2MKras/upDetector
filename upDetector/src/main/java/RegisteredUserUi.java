@@ -15,6 +15,7 @@ public class RegisteredUserUi {
     String userAnswer = "";
     private String parole;
     private String currentSegvards;
+    public String regex = "^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(/.*)?$";
     private void updateUserField(int fieldIndex, String newValue) {
     if (currentSegvards == null || currentSegvards.isBlank()) {
         System.out.println("Segvards nav iestatits.");
@@ -123,8 +124,13 @@ public class RegisteredUserUi {
             app.clear();
             System.out.println("Esat vietnes parbaudes sadala!");
             System.out.println("Ierakstat vietni kuru gribat parbaudit");
+            System.out.println("Lai izietu spied ENTER ");
             System.out.print("Atbilde: ");
             userAnswer = answer.nextLine();
+            if(userAnswer.equals("")) {
+                app.clear();
+                continue;
+            } else if (userAnswer.matches(regex)){
             pingTests.httpPinger(userAnswer, currentSegvards);
             System.out.println(pingTests);
             System.out.println();
@@ -144,17 +150,25 @@ public class RegisteredUserUi {
             userAnswer = answer.nextLine();
             if(userAnswer.equals("")) {
                 app.clear();
-                exit();
+                exit();;
             }
             
         }
+    }
+            
+            
         if(userAnswer.equals("2")){
             // Te jabut vietnes meklesana redirekcija
             app.clear();
             System.out.println("Esat vietnes meklesana sadala!");
             System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
             System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
+            System.out.println("Lai izietu spied ENTER ");
             userAnswer = answer.nextLine();
+            if(userAnswer.equals("")){
+                app.clear();
+                continue;
+            } else if (userAnswer.matches(regex)){
             pingTests.httpPinger(userAnswer, currentSegvards);
             HttpPing ieraksts = pingTests.pedejoReiziSkatits();
             System.out.println(ieraksts);
@@ -162,8 +176,11 @@ public class RegisteredUserUi {
             System.out.print("Spied ENTER lai atgrieztos uz sakuma: ");
             userAnswer = answer.nextLine();
             if(userAnswer.equals("")) {
-                RegisteredUserUi();
+                app.clear();
+                continue;
             }
+        }
+            
             
 
         }
@@ -173,6 +190,7 @@ public class RegisteredUserUi {
             System.out.println("Esat sava konta sadala!");
             System.out.println("Konta redigesana (1)");
             System.out.println("Konta dzesana (2)");
+            System.out.println("Lai izietu spied ENTER ");
             System.out.println("Atbilde: ");
                 userAnswer = answer.nextLine();
 
@@ -251,9 +269,12 @@ public class RegisteredUserUi {
                             System.out.println("[Nepareizs segvards vai parole!]");
                         }
                     }
-            }
-            continue;
+            }continue;
+            
         }
+    }
+         
+        
     
 
         if(userAnswer.equals("4")) {
@@ -284,7 +305,10 @@ public class RegisteredUserUi {
                 } 
             }
         }
-    }
+    
+
+
+
      
      public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();

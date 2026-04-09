@@ -68,6 +68,7 @@ public class appFunkcijas {
         clear();
         System.out.println("    Tu esi registracijas sadala!");
         System.out.println();
+        
         String vards = "", uzvards = "", segvards = "", ePasts = "", parole = "";
         while(true) {
             System.out.print("Ievadiet savu vardu!    ");
