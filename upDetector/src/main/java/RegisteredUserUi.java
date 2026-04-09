@@ -22,13 +22,9 @@ public class RegisteredUserUi {
         System.out.println("Segvards nav iestatits.");
         return;
     }
-     File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
-    if (dataFolder == null) {
-        System.out.println("Data folder not found!");
-        return;
-    }
 
-    File file = new File(dataFolder, "UserData.csv");
+    File datafolder = CsvFileHandler.ensureDataFolder();
+    File file = new File(datafolder, "UserData.csv");
     if (!file.exists()) {
         System.out.println("UserData.csv not found!");
         return;
@@ -93,10 +89,6 @@ public class RegisteredUserUi {
      public void RegisteredUserUi(){
         Scanner answer = new Scanner(System.in);
         app.clear();
-        System.out.println("        -Programma upDetector-      ");
-        System.out.println();
-        System.out.println("Izvelne");
-
         if (currentSegvards.equals("unknown")) {
             System.out.print("Ievadiet segvardu: ");
             String segvards = answer.nextLine();
@@ -258,6 +250,8 @@ public class RegisteredUserUi {
             if(userAnswer.equals("1")){
                 colors = 1;
                 System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+                currentSegvards = "unknown";
+                parole = " ";
                 app.clear();
                 sakums.App();
             }
@@ -283,7 +277,7 @@ public class RegisteredUserUi {
                 if(userAnswer.equals("2")) {
                     System.out.println("Programma nav izslegta!");
                     app.clear();
-                     RegisteredUserUi();
+                    RegisteredUserUi();
         }
     }
             if (userAnswer.equals("5")) {
@@ -291,14 +285,23 @@ public class RegisteredUserUi {
                 System.out.println("Esat milako vietnu sadala!");
                 RegisteredUserFunkcijas pingFave = new RegisteredUserFunkcijas();
                 List<Map<String, String>> favorites = CsvFileHandler.loadFavorites();
-
+                boolean found = false;
                 for (Map<String, String> fav : favorites) {
+                    if(fav.get("Segvards").equals(currentSegvards)) {
+                        found = true;
                     String user = fav.get("Segvards");
                     String site = fav.get("VietnesNosaukums");
                     System.out.println("Parbaude tiek veikta vietnei: " + site + " lietotajam: " + user);
                     pingFave.httpPinger(site, user);
-    }
-    
+                }
+            }
+            System.out.println();
+            System.out.print("Nospied ENTER lai tiktu atpakal: ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("")) {
+                app.clear();
+                RegisteredUserUi();
+            }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if(userAnswer.equals("4")) {
@@ -330,45 +333,5 @@ public class RegisteredUserUi {
 
      public void exit() {
         RegisteredUserUi();
-     }
-     
-     private static File findDataFolder(File startDir) {
-        // First, search UP the directory tree
-        File current = startDir;
-        for (int i = 0; i < 10; i++) {
-            File data = new File(current, "data");
-            if (data.exists() && data.isDirectory()) {
-                return data;
-            }
-            if (current.getParentFile() != null) {
-                current = current.getParentFile();
-            } else {
-                break;
-            }
-        }
-        
-        // Then, search DOWN the directory tree
-        return findDataFolderDown(startDir);
-    }
-    
-    private static File findDataFolderDown(File dir) {
-        File data = new File(dir, "data");
-        if (data.exists() && data.isDirectory()) {
-            return data;
-        }
-        
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    File found = findDataFolderDown(file);
-                    if (found != null) {
-                        return found;
-                    }
-                }
-            }
-        }
-        return null;
-    }
-     
+     } 
 }

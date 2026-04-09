@@ -13,45 +13,6 @@ public class appFunkcijas {
 
     Scanner answer = new Scanner(System.in);
     
-    // Helper method to find the data folder by traversing up and down the directory tree
-    private static File findDataFolder(File startDir) {
-        // First, search UP the directory tree
-        File current = startDir;
-        for (int i = 0; i < 10; i++) {
-            File data = new File(current, "data");
-            if (data.exists() && data.isDirectory()) {
-                return data;
-            }
-            if (current.getParentFile() != null) {
-                current = current.getParentFile();
-            } else {
-                break;
-            }
-        }
-        
-        // Then, search DOWN the directory tree
-        return findDataFolderDown(startDir);
-    }
-    
-    private static File findDataFolderDown(File dir) {
-        File data = new File(dir, "data");
-        if (data.exists() && data.isDirectory()) {
-            return data;
-        }
-        
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    File found = findDataFolderDown(file);
-                    if (found != null) {
-                        return found;
-                    }
-                }
-            }
-        }
-        return null;
-    }
     
     // Method to read password securely (hidden input)
     private String readPassword(String prompt) {

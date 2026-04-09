@@ -8,65 +8,27 @@ import java.util.Scanner;
 public class CsvFileHandler {
 
     public static File ensureDataFolder() {
-    File existing = findDataFolder(new File(System.getProperty("user.dir")));
-    if (existing != null) {
-        return existing;
-    }
-
+        File dataFolder = new File(System.getProperty("user.dir"), "data");
     
-    File dataFolder = new File(System.getProperty("user.dir"), "data");
-    if (dataFolder.mkdirs()) {
-        if (App.colors == 1) {
-            System.out.println("\u001B[32m[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]\u001B[0m");
-        } else {
-            System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
-        }
-    } else {
-        System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
-    }
-    return dataFolder;
-}
-
-    // Helper method to find the data folder
-    private static File findDataFolder(File startDir) {
-        File current = startDir;
-        for (int i = 0; i < 10; i++) {
-            File data = new File(current, "data");
-            if (data.exists() && data.isDirectory()) {
-                return data;
-            }
-            if (current.getParentFile() != null) {
-                current = current.getParentFile();
-            } else {
-                break;
-            }
-        }
-        return findDataFolderDown(startDir);
-    }
-
-    private static File findDataFolderDown(File dir) {
-        File data = new File(dir, "data");
-        if (data.exists() && data.isDirectory()) {
-            return data;
-        }
-        File[] files = dir.listFiles();
-        if (files != null) {
-            for (File file : files) {
-                if (file.isDirectory()) {
-                    File found = findDataFolderDown(file);
-                    if (found != null) {
-                        return found;
-                    }
+        if (!dataFolder.exists()) {
+            if (dataFolder.mkdirs()) {
+                if (App.colors == 1) {
+                    System.out.println("\u001B[32m[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]\u001B[0m");
+                } else {
+                    System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
                 }
+            } else {
+                System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
             }
         }
-        return null;
+        return dataFolder;
     }
+
 
     // Save users list to CSV (compatible with appFunkcijas)
     public static void addUsersToCSV(List<Lietotajs> users, String fileName) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 System.out.println("Data folder not found");
                 return;
@@ -74,23 +36,23 @@ public class CsvFileHandler {
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
             boolean isNew = !file.exists();
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 if (isNew) {
                     writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
                     writer.newLine();
                 }
-                for(Lietotajs u : users) {
+                for (Lietotajs u : users) {
                     writer.write(u.toString());
                     writer.newLine();
                 }
-                if(App.colors == 1) {
+                if (App.colors == 1) {
                     System.out.println("\u001B[32m[Lietotajs ir registrets]\u001B[0m");
                 } else {
                     System.out.println("[Lietotajs ir registrets]");
                 }
             }
-        } catch(IOException e) {
-            if(App.colors == 1) {
+        } catch (IOException e) {
+            if (App.colors == 1) {
                 System.out.println("\u001B[31m[Kluda saglabajot lietotaju: " + e.getMessage() + "]\u001B[0m");
             } else {
                 System.out.println("[Kluda saglabajot lietotaju: " + e.getMessage() + "]");
@@ -114,7 +76,7 @@ public class CsvFileHandler {
     // Simple method to add a line to any CSV file
     public static void saveLine(String fileName, String data, String header) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 System.out.println("Data folder not found");
                 return;
@@ -122,27 +84,28 @@ public class CsvFileHandler {
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
             boolean isNew = !file.exists();
-            try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                if (isNew && header != null && !header.isEmpty()) { 
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                if (isNew && header != null && !header.isEmpty()) {
                     writer.write(header);
                     writer.newLine();
                 }
                 writer.write(data);
                 writer.newLine();
             }
-            if(App.colors == 1) {
+            if (App.colors == 1) {
                 System.out.println("\u001B[32m[Dati saglabati]\u001B[0m");
             } else {
                 System.out.println("[Dati saglabati]");
             }
-        } catch(IOException e) {
-            if(App.colors == 1) {
+        } catch (IOException e) {
+            if (App.colors == 1) {
                 System.out.println("\u001B[31m[Kluda saglabajot: " + e.getMessage() + "]\u001B[0m");
             } else {
                 System.out.println("[Kluda saglabajot: " + e.getMessage() + "]");
             }
         }
     }
+
     public static void saveLine(String fileName, String data) {
         saveLine(fileName, data, null);
     }
@@ -150,7 +113,7 @@ public class CsvFileHandler {
     // Remove record from CSV file by identifier (any field index)
     public static void removeFromCSV(String fileName, String identifier, int fieldIndex) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 System.out.println("Data folder not found");
                 return;
@@ -176,7 +139,6 @@ public class CsvFileHandler {
                 return;
             }
 
-            // Replace original file with temp file
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(tempFile));
                 FileWriter writer = new FileWriter(filePath);
@@ -207,7 +169,7 @@ public class CsvFileHandler {
     // Edit record in CSV file by identifier
     public static void editRecord(String fileName, String identifier, int fieldIndex, String[] fieldNames) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 System.out.println("Data folder not found");
                 return;
@@ -233,7 +195,6 @@ public class CsvFileHandler {
                             System.out.println("Ieraksts atrasts!");
                         }
 
-                        // Display field options
                         for (int i = 0; i < fieldNames.length && i < row.length; i++) {
                             System.out.println((i + 1) + " - " + fieldNames[i]);
                         }
@@ -260,7 +221,6 @@ public class CsvFileHandler {
                             }
                         }
 
-                        // Write updated row
                         StringBuilder updatedLine = new StringBuilder();
                         for (int i = 0; i < row.length; i++) {
                             if (i > 0) updatedLine.append(",");
@@ -292,7 +252,6 @@ public class CsvFileHandler {
                 return;
             }
 
-            // Replace original file with temp file
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(tempFile));
                 FileWriter writer = new FileWriter(filePath);
@@ -323,7 +282,7 @@ public class CsvFileHandler {
     // Read all records from CSV file
     public static void readCSV(String fileName) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 System.out.println("Data folder not found");
                 return;
@@ -348,7 +307,7 @@ public class CsvFileHandler {
     // Check if a user exists by segvards
     public static boolean checkUserExists(String segvards, String fileName) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 return false;
             }
@@ -361,7 +320,7 @@ public class CsvFileHandler {
                 boolean firstLine = true;
                 while ((line = br.readLine()) != null) {
                     if (firstLine) {
-                        firstLine = false; // Skip header
+                        firstLine = false;
                         continue;
                     }
                     String[] parts = line.split(",");
@@ -372,13 +331,14 @@ public class CsvFileHandler {
             }
         } catch (IOException e) {
             System.out.println("Error checking user: " + e.getMessage());
-        }  
+        }
         return false;
     }
+
     // List all CSV files in the data folder
     public static void listCsvFiles() {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null || !dataFolder.isDirectory()) {
                 System.out.println("Data folder not found");
                 return;
@@ -400,7 +360,7 @@ public class CsvFileHandler {
     // Check if user login is valid (segvards and parole match)
     public static boolean checkUserLogin(String segvards, String parole, String fileName) {
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 return false;
             }
@@ -423,7 +383,12 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error checking login: " + e.getMessage());
+            if(App.colors == 1) {
+            System.out.println("\\\\u001B[31m[Kluda parbaudot pierakstisanos ]\\\\u001B[0m" + e.getMessage());
+            }
+            if(App.colors == 0) {
+            System.out.println("[Kluda parbaudot pierakstisanos ]" + e.getMessage());
+            }
         }
         return false;
     }
@@ -432,7 +397,7 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadUsers() {
         List<Map<String, String>> users = new ArrayList<>();
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 return users;
             }
@@ -463,7 +428,7 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadWebsites() {
         List<Map<String, String>> websites = new ArrayList<>();
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 return websites;
             }
@@ -487,7 +452,12 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error loading websites: " + e.getMessage());
+            if(App.colors == 1) {
+            System.out.println("\\\\u001B[31m[Kluda palaizot csv failus: ]\\\\u001B[0m" + e.getMessage());
+            }
+            if(App.colors == 0) {
+            System.out.println("[Kluda palaizot csv failus: ]" + e.getMessage());
+            }
         }
         return websites;
     }
@@ -496,7 +466,7 @@ public class CsvFileHandler {
     public static List<Map<String, String>> loadFavorites() {
         List<Map<String, String>> favorites = new ArrayList<>();
         try {
-            File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
+            File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
                 return favorites;
             }
@@ -515,7 +485,12 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error loading favorites: " + e.getMessage());
+            if(App.colors == 1) {
+            System.out.println("\\\\u001B[31m[Kluda palaizot milakos ierakstus: ]\\\\u001B[0m" + e.getMessage());
+            }
+            if(App.colors == 0) {
+            System.out.println("[Kluda palaizot milakos ierakstus: ]" + e.getMessage());
+            }
         }
         return favorites;
     }
@@ -547,12 +522,11 @@ public class CsvFileHandler {
     // Get combined data: users with their websites and favorites
     public static Map<String, Map<String, Object>> getAllData() {
         Map<String, Map<String, Object>> allData = new HashMap<>();
-        
+
         List<Map<String, String>> users = loadUsers();
         List<Map<String, String>> websites = loadWebsites();
         List<Map<String, String>> favorites = loadFavorites();
-        
-        // Add users
+
         for (Map<String, String> user : users) {
             String segvards = user.get("Segvards");
             Map<String, Object> userData = new HashMap<>();
@@ -561,8 +535,7 @@ public class CsvFileHandler {
             userData.put("favorites", new ArrayList<String>());
             allData.put(segvards, userData);
         }
-        
-        // Add websites to users
+
         for (Map<String, String> website : websites) {
             String segvards = website.get("Segvards");
             if (allData.containsKey(segvards)) {
@@ -571,8 +544,7 @@ public class CsvFileHandler {
                 userWebsites.add(website);
             }
         }
-        
-        // Add favorites to users
+
         for (Map<String, String> fav : favorites) {
             String segvards = fav.get("Segvards");
             if (allData.containsKey(segvards)) {
@@ -581,7 +553,7 @@ public class CsvFileHandler {
                 userFavorites.add(fav.get("VietnesNosaukums"));
             }
         }
-        
+
         return allData;
     }
 }

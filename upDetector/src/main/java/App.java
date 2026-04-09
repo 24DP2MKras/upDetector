@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Scanner;
 public class App {
     public static int colors; // 1 ir krāsas, 0 nav krāsu
@@ -96,6 +97,11 @@ public class App {
     
     public static void main(String[] args) {
         CsvFileHandler.ensureDataFolder();
+        System.out.println(CsvFileHandler.ensureDataFolder().getAbsolutePath());
+        File folder = CsvFileHandler.ensureDataFolder();
+        System.out.println("Data folder path: " + folder.getAbsolutePath());
+        System.out.println("Exists: " + folder.exists());
+        System.out.println("Is directory: " + folder.isDirectory());
         App tests = new App();
         tests.App();
     }
