@@ -3,7 +3,8 @@ import java.net.URI;
 import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RegisteredUserFunkcijas {
     public List<HttpPing> ieraksts;

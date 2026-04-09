@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
@@ -112,12 +113,18 @@ public class RegisteredUserUi {
         }
 
         while(true) {
-        System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības)");
-        System.out.println("Vietnes parbaude (1) ");
-        System.out.println("Konts (2) ");
-        System.out.println("Izrakstities (3)");
-        System.out.println("Izslegt programmu (4)");
-        System.out.print("Atbilde: ");
+        System.out.println("                        -Programma upDetector-");
+        System.out.println(" ________________________________________________________________________ ");
+        System.out.println("|Izvelne|                                                                |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības) |");
+        System.out.println("| Vietnes parbaude (1)                                                   |");
+        System.out.println("| Konts (2)                                                              |");
+        System.out.println("| Izrakstities (3)                                                       |");
+        System.out.println("| Izslegt programmu (4)                                                  |");
+        System.out.println("| Milako vietnu parbaude (5)                                             |");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.print("|Atbilde: "); 
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Vietnes parbaudes redirekcija
@@ -269,6 +276,36 @@ if(userAnswer.equals("2")) {
 
             }
         }
+    }
+            if(userAnswer.equals("4")) {
+                System.out.println("Vai tiesam velaties izslegt programmu? ");
+                System.out.println("Ja (1)");
+                System.out.println("Ne (2)");
+                System.out.print("Atbilde: ");
+                userAnswer = answer.nextLine();
+                if(userAnswer.equals("1")){
+                    app.clear();
+                    app.exit();
+                }
+                if(userAnswer.equals("2")) {
+                    System.out.println("Programma nav izslegta!");
+                    app.clear();
+                     RegisteredUserUi();
+        }
+    }
+            if (userAnswer.equals("5")) {
+                app.clear();
+                System.out.println("Esat milako vietnu sadala!");
+                RegisteredUserFunkcijas pingFave = new RegisteredUserFunkcijas();
+                List<Map<String, String>> favorites = CsvFileHandler.loadFavorites();
+
+                for (Map<String, String> fav : favorites) {
+                    String user = fav.get("Segvards");
+                    String site = fav.get("VietnesNosaukums");
+                    System.out.println("Parbaude tiek veikta vietnei: " + site + " lietotajam: " + user);
+                    pingFave.httpPinger(site, user);
+    }
+    
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if(userAnswer.equals("4")) {
@@ -293,11 +330,6 @@ if(userAnswer.equals("2")) {
                 } 
             }
         }
-    
-
-
-
-     
      public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();
         ui.RegisteredUserUi();

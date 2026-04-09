@@ -1,4 +1,4 @@
-import java.util.*;
+import java.util.Scanner;
 public class App {
     public static int colors; // 1 ir krāsas, 0 nav krāsu
     public String todo() {
@@ -16,12 +16,17 @@ public class App {
         System.out.println();
         System.out.println("Izvelne");
         while(true) {
-        System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)");
-        System.out.println("Registresanas (1)  ");
-        System.out.println("Pierakstisanas (2)  ");
-        System.out.println("Krasu shema (3)");
-        System.out.println("Izslegt programmu (4)");
-        System.out.print("Atbilde: ");
+        System.out.println("                         -Programma upDetector-      ");
+        System.out.println(" _______________________________________________________________________");
+        System.out.println("|Izvelne|                                                               |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)|");
+        System.out.println("| Registresanas (1)                                                     |");
+        System.out.println("| Pierakstisanas (2)                                                    |");
+        System.out.println("| Krasu shema (3)                                                       |");
+        System.out.println("| Izslegt programmu (4)                                                 |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.print("|Atbilde:");
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija

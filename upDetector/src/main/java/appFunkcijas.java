@@ -1,5 +1,8 @@
-import java.util.*;
-import java.io.*;
+import java.io.Console;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 public class appFunkcijas {
     public List<Lietotajs> users; 
 
