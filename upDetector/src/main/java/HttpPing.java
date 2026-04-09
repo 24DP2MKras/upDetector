@@ -12,10 +12,10 @@ public class HttpPing {
         this.urlString = urlString;
     }
     public String toString() {
-        return "|Atrums: " + this.ping + " ms " + "|Datums/Laiks: " + this.timestamp + "|segvards: " + segvards + " |";
+        return this.ping + " ms " + ", " + this.timestamp + ", " + segvards;
     }
     public String toString1() {
-    return "|Atrums: " + this.ping + " ms " + "|Nosaukums: " + this.urlString + "|segvards: " + this.segvards + " |";
+    return this.ping + " ms " + ", " + this.urlString + ", " + this.segvards;
     }
     public String getSegVards() {
         return this.segvards;
