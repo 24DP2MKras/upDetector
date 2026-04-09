@@ -180,10 +180,7 @@ public class RegisteredUserUi {
                 continue;
             }
         }
-            
-            
-
-        }
+    }
 if(userAnswer.equals("3")) {
     app.clear();
     while(true) {

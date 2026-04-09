@@ -69,8 +69,9 @@ public class appFunkcijas {
         
         String vards = "", uzvards = "", segvards = "", ePasts = "", parole = "";
         while(true) {
-            System.out.print("Ievadiet savu vardu!    ");
+            System.out.print("Ievadiet savu vardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
             vards = answer.nextLine();
+            if(vards.isEmpty()) return null;
             if(vards.matches("^[A-Za-zĀ-ž]{3,50}$")) {
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
@@ -88,8 +89,9 @@ public class appFunkcijas {
             }
         }
         while(true) {
-            System.out.print("Ievadiet savu uzvardu!    ");
+            System.out.print("Ievadiet savu uzvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
             uzvards = answer.nextLine();
+            if(uzvards.isEmpty()) return null;
             if(uzvards.matches("^[A-Za-zĀ-ž]{4,60}$")) {
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
@@ -102,13 +104,14 @@ public class appFunkcijas {
                 if (App.colors == 1) {
                     System.out.println("\u001B[31m[Ludzu ievadiet derigu uzvardu (piemeram: Berzins)!]\u001B[0m");
                 } else {
-                    System.out.println("[LLudzu ievadiet derigu uzvardu (piemeram: Berzins)!]");
+                    System.out.println("[Ludzu ievadiet derigu uzvardu (piemeram: Berzins)!]");
                 }
             }
         }
         while(true) {
-            System.out.println("Ievadiet savu unikalo segvardu!    ");
+            System.out.print("Ievadiet savu unikalo segvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
             segvards = answer.nextLine();
+            if(segvards.isEmpty()) return null;
             if (CsvFileHandler.checkUserExists(segvards) == true) {
                 if (App.colors == 1) {
                     System.out.println("\u001B[31m[Segvards jau eksiste, ludzu izvelieties citu segvardu!]\u001B[0m");
@@ -134,8 +137,9 @@ public class appFunkcijas {
             }
         }
         while(true) {
-            System.out.println("Ievadiet savu E-pastu!    ");
+            System.out.print("Ievadiet savu E-pastu vai spiediet ENTER lai atgrieztos uz izvelni: ");
             ePasts = answer.nextLine();
+            if(ePasts.isEmpty()) return null;
             if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {                
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
@@ -153,9 +157,10 @@ public class appFunkcijas {
             }
         }
         while(true) {
-            parole = readPassword("Ievadiet savu unikalo paroli!    ");
+            parole = readPassword("Ievadiet savu unikalo paroli vai spiediet ENTER lai atgrieztos uz izvelni: ");
+            if(parole.isEmpty()) return null;
             if(parole.matches("^(?=.*\\d)[A-Za-z\\d-/.!@#$]{8,20}$")) {
-                String parolesParbaude = readPassword("Ievadiet savu unikalo paroli velreiz!   ");
+                String parolesParbaude = readPassword("Ievadiet savu unikalo paroli velreiz: ");
                 if(parole.equals(parolesParbaude)) {
                     if (App.colors == 1) {
                         System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
@@ -193,8 +198,9 @@ public class appFunkcijas {
         clear();
         System.out.println("    Tu esi pierakstisanas sadala!   ");
         while(true) {
-        System.out.print("Ievadiet sava konta Segvardu: ");
+        System.out.print("Ievadiet sava konta Segvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
         String SegvardaLauks = answer.nextLine(); 
+        if(SegvardaLauks.isEmpty()) break;
         if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
             String ParolesLauks = readPassword("Ievadiet savu paroli: ");
             if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {

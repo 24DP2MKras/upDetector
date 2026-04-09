@@ -28,7 +28,9 @@ public class App {
             app.clear();
             appFunkcijas register = new appFunkcijas();
             Lietotajs newUser = register.registracija();
-            register.add(newUser);
+            if(newUser != null) {
+                register.add(newUser);
+            }
             App();
             
             
@@ -38,7 +40,7 @@ public class App {
             app.clear();
             appFunkcijas login = new appFunkcijas();
             login.pierakstisanas();
-            break;
+            App();
         }
         if(userAnswer.equals("3")) {
             app.clear();
