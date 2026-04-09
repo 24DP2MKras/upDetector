@@ -25,12 +25,7 @@ public class App {
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija
-            System.out.println("Lai izietu spied ENTER ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("")){
-                app.clear();
-                continue;
-            }
+            app.clear();
             appFunkcijas register = new appFunkcijas();
             Lietotajs newUser = register.registracija();
             register.add(newUser);

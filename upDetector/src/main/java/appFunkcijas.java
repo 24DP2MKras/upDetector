@@ -1,8 +1,6 @@
-import java.io.Console;
 import java.util.*;
 import java.io.*;
 public class appFunkcijas {
-    
     public List<Lietotajs> users; 
 
     public appFunkcijas(){
@@ -111,6 +109,14 @@ public class appFunkcijas {
         while(true) {
             System.out.println("Ievadiet savu unikalo segvardu!    ");
             segvards = answer.nextLine();
+            if (CsvFileHandler.checkUserExists(segvards) == true) {
+                if (App.colors == 1) {
+                    System.out.println("\u001B[31m[Segvards jau eksiste, ludzu izvelieties citu segvardu!]\u001B[0m");
+                } else {
+                    System.out.println("[Segvards jau eksiste, ludzu izvelieties citu segvardu!]");
+                }
+                continue;
+            }
             if(segvards.matches("^(?![!@#$]+$)[A-Za-z0-9!@#$]{4,20}$")) {
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
@@ -130,7 +136,7 @@ public class appFunkcijas {
         while(true) {
             System.out.println("Ievadiet savu E-pastu!    ");
             ePasts = answer.nextLine();
-            if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$")) {                
+            if (ePasts.matches("^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$")) {                
                 if (App.colors == 1) {
                     System.out.println("\u001B[32m[Dati ievaditi]\u001B[0m");
                     break;
@@ -142,13 +148,13 @@ public class appFunkcijas {
                 if (App.colors == 1) {
                     System.out.println("\u001B[31m[Ludzu ievadiet derigu E-pastu (piemeram: example@gmail.com )!]\u001B[0m");
                 } else {
-                    System.out.println("[LLudzu ievadiet derigu E-pastu (piemeram: example@gmail.com )!]");
+                    System.out.println("[Ludzu ievadiet derigu E-pastu (piemeram: example@gmail.com )!]");
                 }
             }
         }
         while(true) {
             parole = readPassword("Ievadiet savu unikalo paroli!    ");
-            if(parole.matches("^(?=.*\\d)[A-Za-z\\d!@#$]{8,20}$")) {
+            if(parole.matches("^(?=.*\\d)[A-Za-z\\d-/.!@#$]{8,20}$")) {
                 String parolesParbaude = readPassword("Ievadiet savu unikalo paroli velreiz!   ");
                 if(parole.equals(parolesParbaude)) {
                     if (App.colors == 1) {
@@ -171,7 +177,7 @@ public class appFunkcijas {
                 if (App.colors == 1) {
                     System.out.println("\u001B[31m[Ludzu ievadiet derigu paroli (piemeram: qwertyu7 )!]\u001B[0m");
                 } else {
-                    System.out.println("[LLudzu ievadiet derigu paroli (piemeram: qwertyu7 )!]");
+                    System.out.println("[Ludzu ievadiet derigu paroli (piemeram: qwertyu7 )!]");
                 }
             }
         }
