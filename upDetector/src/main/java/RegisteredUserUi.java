@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
@@ -116,7 +117,6 @@ public class RegisteredUserUi {
         System.out.println("Vietnes parbaude (1) ");
         System.out.println("Konts (2) ");
         System.out.println("Izrakstities (3)");
-        System.out.println("Izslegt programmu (4)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
@@ -152,15 +152,12 @@ public class RegisteredUserUi {
             userAnswer = answer.nextLine();
             if(userAnswer.equals("")) {
                 app.clear();
-                exit();;
+                exit();
             }
             
         }
     }
-            
-            
-        
-if(userAnswer.equals("2")) {
+    if(userAnswer.equals("2")) {
     app.clear();
     while(true) {
         System.out.println("Esat sava konta sadala!");
@@ -242,10 +239,6 @@ if(userAnswer.equals("2")) {
     }
     continue; // ← back to outer menu after breaking out
 }
-
-         
-        
-    
             if(userAnswer.equals("3")) {
             app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
@@ -271,33 +264,11 @@ if(userAnswer.equals("2")) {
         }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
-        if(userAnswer.equals("4")) {
-                System.out.println("Vai tiesam velaties izslegt programmu? ");
-                
-                System.out.println("Ja (1)");
-                System.out.println("Ne (2)");
-                System.out.print("Atbilde: ");
-                userAnswer = answer.nextLine();
-                if(userAnswer.equals("1")){
-            app.clear();
-            app.exit();
-        }
-        if(userAnswer.equals("2")) {
-            System.out.println("Programma nav izslegta!");
-            app.clear();
-            RegisteredUserUi();
-        }
-             }
         if (userAnswer.equals("")) {
             app.exit();
                 } 
             }
-        }
-    
-
-
-
-     
+        }     
      public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();
         ui.RegisteredUserUi();

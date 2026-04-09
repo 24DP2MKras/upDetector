@@ -68,6 +68,7 @@ public class App {
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if (userAnswer.equals("4")) {
+<<<<<<< HEAD
             //opcija iet uz sakumu jabut seit
             System.out.println("Vai tiesam velaties izslegt programmu? ");
             System.out.println("Ja (1)");
@@ -83,6 +84,10 @@ public class App {
                 app.clear();
                 App();
             }
+=======
+            //opcija iet uz sakumu 
+            App();
+>>>>>>> a5e976b (Izveidoju mīļāko vietņu pārbaudītāju.)
         }
         if (userAnswer.equals("")) {
             app.clear();
