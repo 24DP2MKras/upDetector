@@ -47,27 +47,23 @@ public class RegisteredUserFunkcijas {
     }
     public HttpPing pedejoReiziSkatits() {
         HttpPing result = new HttpPing(segvards, ping, timestamp, urlString.toString());
-        CsvFileHandler.saveLine("Vietnes.csv", ieraksts.toString());
+        CsvFileHandler.saveLine("Vietnes.csv", ieraksts.toString(), "Segvards,PingAtrums(ms),Datums/Laiks,URL");
         return result;
     }
     public HttpPing pedejoReiziSkatits1() {
     HttpPing result = new HttpPing(segvards, ping, timestamp, urlString.toString());
-    
-    StringBuilder sb = new StringBuilder();
     for (HttpPing h : ieraksts) {
-        sb.append(h.toString1()).append("\n");
-    }
-    
-    CsvFileHandler.saveLine("MilakasVietnes.csv", sb.toString());
+        CsvFileHandler.saveLine("MilakasVietnes.csv", h.toString1(),"Segvards,PingAtrums(ms),URL");
+        }
     return result;
     }
 
      @Override
     public String toString() {
-        return "|Atrums: " + this.ping + " ms " + "|Datums/Laiks: " + this.timestamp + "|segvards: " + segvards + " |";
+        return this.ping + " ms" + "," + this.timestamp + "," + this.segvards + "," + this.urlString;
         
     }
     public String toString1(){
-        return "|Atrums: " + this.ping + " ms " + "|Nosaukums: " + this.urlString  + "|segvards: " + segvards + " |";
+        return this.ping + " ms" + "," + this.urlString  + "," + this.segvards;
     }
 }

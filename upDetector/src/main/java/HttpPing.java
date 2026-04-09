@@ -29,5 +29,6 @@ public class HttpPing {
     public String getUrlString() { 
         return this.urlString; 
     }
+
     
 }

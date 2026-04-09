@@ -178,7 +178,7 @@ public class appFunkcijas {
     }
     public void add(Lietotajs user) {
         users.add(user);
-        CsvFileHandler.saveLine("UserData.csv", user.toString());
+        CsvFileHandler.saveLine("UserData.csv", user.toString(), "Vards,Uzvards,Segvards,Epasts,Parole,Datums/Laiks");
     }
         
     

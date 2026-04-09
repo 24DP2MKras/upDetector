@@ -78,6 +78,7 @@ public class App {
     }
     
     public static void main(String[] args) {
+        CsvFileHandler.ensureDataFolder();
         App tests = new App();
         tests.App();
     }

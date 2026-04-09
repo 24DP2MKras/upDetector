@@ -1,11 +1,31 @@
 import java.io.*;
-import java.util.List;
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Scanner;
 
 public class CsvFileHandler {
+
+    public static File ensureDataFolder() {
+    File existing = findDataFolder(new File(System.getProperty("user.dir")));
+    if (existing != null) {
+        return existing;
+    }
+
+    
+    File dataFolder = new File(System.getProperty("user.dir"), "data");
+    if (dataFolder.mkdirs()) {
+        if (App.colors == 1) {
+            System.out.println("\u001B[32m[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]\u001B[0m");
+        } else {
+            System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
+        }
+    } else {
+        System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
+    }
+    return dataFolder;
+}
 
     // Helper method to find the data folder
     private static File findDataFolder(File startDir) {
@@ -53,8 +73,9 @@ public class CsvFileHandler {
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
+            boolean isNew = !file.exists();
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                if (!file.exists()) {
+                if (isNew) {
                     writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
                     writer.newLine();
                 }
@@ -91,7 +112,7 @@ public class CsvFileHandler {
     }
 
     // Simple method to add a line to any CSV file
-    public static void saveLine(String fileName, String data) {
+    public static void saveLine(String fileName, String data, String header) {
         try {
             File dataFolder = findDataFolder(new File(System.getProperty("user.dir")));
             if (dataFolder == null) {
@@ -100,10 +121,10 @@ public class CsvFileHandler {
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
+            boolean isNew = !file.exists();
             try(BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
-                // Add header for UserData.csv if it doesn't exist
-                if (!file.exists() && fileName.equals("UserData.csv")) {
-                    writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
+                if (isNew && header != null && !header.isEmpty()) { 
+                    writer.write(header);
                     writer.newLine();
                 }
                 writer.write(data);
@@ -121,6 +142,9 @@ public class CsvFileHandler {
                 System.out.println("[Kluda saglabajot: " + e.getMessage() + "]");
             }
         }
+    }
+    public static void saveLine(String fileName, String data) {
+        saveLine(fileName, data, null);
     }
 
     // Remove record from CSV file by identifier (any field index)
