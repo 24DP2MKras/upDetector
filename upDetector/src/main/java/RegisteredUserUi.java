@@ -116,6 +116,7 @@ public class RegisteredUserUi {
         System.out.println("Vietnes parbaude (1) ");
         System.out.println("Konts (2) ");
         System.out.println("Izrakstities (3)");
+        System.out.println("Izslegt programmu (4)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
@@ -270,6 +271,23 @@ if(userAnswer.equals("2")) {
         }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
+        if(userAnswer.equals("4")) {
+                System.out.println("Vai tiesam velaties izslegt programmu? ");
+                
+                System.out.println("Ja (1)");
+                System.out.println("Ne (2)");
+                System.out.print("Atbilde: ");
+                userAnswer = answer.nextLine();
+                if(userAnswer.equals("1")){
+            app.clear();
+            app.exit();
+        }
+        if(userAnswer.equals("2")) {
+            System.out.println("Programma nav izslegta!");
+            app.clear();
+            RegisteredUserUi();
+        }
+             }
         if (userAnswer.equals("")) {
             app.exit();
                 } 

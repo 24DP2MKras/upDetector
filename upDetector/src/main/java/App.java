@@ -20,7 +20,7 @@ public class App {
         System.out.println("Registresanas (1)  ");
         System.out.println("Pierakstisanas (2)  ");
         System.out.println("Krasu shema (3)");
-        System.out.println("Atgriezties uz sakuma ekranu (4)");
+        System.out.println("Izslegt programmu (4)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
@@ -69,8 +69,20 @@ public class App {
         }
         if (userAnswer.equals("4")) {
             //opcija iet uz sakumu jabut seit
-            app.clear();
-            App();
+            System.out.println("Vai tiesam velaties izslegt programmu? ");
+            System.out.println("Ja (1)");
+            System.out.println("Ne (2)");
+            System.out.print("Atbilde: ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("1")){
+                app.clear();
+                app.exit();
+            }
+            if(userAnswer.equals("2")) {
+                System.out.println("Programma nav izslegta!");
+                app.clear();
+                App();
+            }
         }
         if (userAnswer.equals("")) {
             app.clear();
