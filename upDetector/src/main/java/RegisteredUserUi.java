@@ -114,16 +114,16 @@ public class RegisteredUserUi {
         while(true) {
         System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības)");
         System.out.println("Vietnes parbaude (1) ");
-        System.out.println("Vietnes meklesana (2) ");
-        System.out.println("Konts (3) ");
-        System.out.println("Izrakstities (4)");
+        System.out.println("Konts (2) ");
+        System.out.println("Izrakstities (3)");
         System.out.print("Atbilde: ");
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Vietnes parbaudes redirekcija
             app.clear();
             System.out.println("Esat vietnes parbaudes sadala!");
-            System.out.println("Ierakstat vietni kuru gribat parbaudit");
+            System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
+            System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
             System.out.println("Lai izietu spied ENTER ");
             System.out.print("Atbilde: ");
             userAnswer = answer.nextLine();
@@ -132,7 +132,8 @@ public class RegisteredUserUi {
                 continue;
             } else if (userAnswer.matches(regex)){
             pingTests.httpPinger(userAnswer, currentSegvards);
-            System.out.println(pingTests);
+            HttpPing ieraksts = pingTests.pedejoReiziSkatits();
+            System.out.println(ieraksts);
             System.out.println();
             System.out.println("Vai gribat pievienot so vietni milakajam vietnem?");
             System.out.println("Ja (1)");
@@ -157,31 +158,8 @@ public class RegisteredUserUi {
     }
             
             
-        if(userAnswer.equals("2")){
-            // Te jabut vietnes meklesana redirekcija
-            app.clear();
-            System.out.println("Esat vietnes meklesana sadala!");
-            System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
-            System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
-            System.out.println("Lai izietu spied ENTER ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("")){
-                app.clear();
-                continue;
-            } else if (userAnswer.matches(regex)){
-            pingTests.httpPinger(userAnswer, currentSegvards);
-            HttpPing ieraksts = pingTests.pedejoReiziSkatits();
-            System.out.println(ieraksts);
-            System.out.println();
-            System.out.print("Spied ENTER lai atgrieztos uz sakuma: ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("")) {
-                app.clear();
-                continue;
-            }
-        }
-    }
-if(userAnswer.equals("3")) {
+        
+if(userAnswer.equals("2")) {
     app.clear();
     while(true) {
         System.out.println("Esat sava konta sadala!");
@@ -267,7 +245,7 @@ if(userAnswer.equals("3")) {
          
         
     
-            if(userAnswer.equals("4")) {
+            if(userAnswer.equals("3")) {
             app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
             System.out.println("    Vai tiesam velaties izrakstities?    ");
