@@ -12,16 +12,27 @@ public class App {
     public void App(){
         app.clear();
         Scanner answer = new Scanner(System.in);
-        System.out.println("        -Programma upDetector-      ");
-        System.out.println();
-        System.out.println("Izvelne");
         while(true) {
+<<<<<<< HEAD
         System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)");
         System.out.println("Registresanas (1)  ");
         System.out.println("Pierakstisanas (2)  ");
         System.out.println("Krasu shema (3)");
         System.out.println("Izslegt programmu (4)");
         System.out.print("Atbilde: ");
+=======
+        System.out.println("                         -Programma upDetector-      ");
+        System.out.println(" _______________________________________________________________________");
+        System.out.println("|Izvelne|                                                               |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)|");
+        System.out.println("| Registresanas (1)                                                     |");
+        System.out.println("| Pierakstisanas (2)                                                    |");
+        System.out.println("| Krasu shema (3)                                                       |");
+        System.out.println("| Atgriezties uz sakuma ekranu (4)                                      |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.print("|Atbilde:");
+>>>>>>> 012222e (interface priekš app.java un userinterfaceui.java)
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija

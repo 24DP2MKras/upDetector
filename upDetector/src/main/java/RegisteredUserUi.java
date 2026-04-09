@@ -113,11 +113,16 @@ public class RegisteredUserUi {
         }
 
         while(true) {
-        System.out.println("Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības)");
-        System.out.println("Vietnes parbaude (1) ");
-        System.out.println("Konts (2) ");
-        System.out.println("Izrakstities (3)");
-        System.out.print("Atbilde: ");
+        System.out.println("                        -Programma upDetector-");
+        System.out.println(" ________________________________________________________________________ ");
+        System.out.println("|Izvelne|                                                                |");
+        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+        System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbības) |");
+        System.out.println("| Vietnes parbaude (1)                                                   |");
+        System.out.println("| Konts (2)                                                              |");
+        System.out.println("| Izrakstities (3)                                                       |");
+        System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+        System.out.print("|Atbilde: "); 
         String userAnswer = answer.nextLine();
         if(userAnswer.equals("1")) {
             //Te jabut Vietnes parbaudes redirekcija
