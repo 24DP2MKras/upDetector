@@ -178,6 +178,8 @@ public class RegisteredUserUi {
 
 
             if(userAnswer.equals("1")){
+                app.clear();
+                System.out.println("Esat sava konta redigesanas sadala!");
                 System.out.print("Ievadiet savu segvardu lai apstiprinatu: ");
                 String enteredSegvards = answer.nextLine();
                 if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
