@@ -54,7 +54,7 @@ public class RegisteredUserFunkcijas {
     public HttpPing pedejoReiziSkatits1() {
     HttpPing result = new HttpPing(segvards, ping, timestamp, urlString.toString());
     for (HttpPing h : ieraksts) {
-        CsvFileHandler.saveLine("MilakasVietnes.csv", h.toString1(),"Segvards,PingAtrums(ms),URL");
+        CsvFileHandler.saveLine("MilakasVietnes.csv", h.toString1(),"Segvards,URL");
         }
     return result;
     }
@@ -65,6 +65,6 @@ public class RegisteredUserFunkcijas {
         
     }
     public String toString1(){
-        return this.ping + " ms" + "," + this.urlString  + "," + this.segvards;
+        return this.segvards + " ms" + "," + this.urlString;
     }
 }

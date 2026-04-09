@@ -12,9 +12,6 @@ public class App {
     public void App(){
         app.clear();
         Scanner answer = new Scanner(System.in);
-        System.out.println("        -Programma upDetector-      ");
-        System.out.println();
-        System.out.println("Izvelne");
         while(true) {
         System.out.println("                         -Programma upDetector-      ");
         System.out.println(" _______________________________________________________________________");

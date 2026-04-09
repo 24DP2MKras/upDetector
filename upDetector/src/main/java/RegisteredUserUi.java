@@ -159,15 +159,12 @@ public class RegisteredUserUi {
             userAnswer = answer.nextLine();
             if(userAnswer.equals("")) {
                 app.clear();
-                exit();;
+                exit();
             }
             
         }
     }
-            
-            
-        
-if(userAnswer.equals("2")) {
+    if(userAnswer.equals("2")) {
     app.clear();
     while(true) {
         System.out.println("Esat sava konta sadala!");
@@ -249,10 +246,6 @@ if(userAnswer.equals("2")) {
     }
     continue; // ← back to outer menu after breaking out
 }
-
-         
-        
-    
             if(userAnswer.equals("3")) {
             app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
