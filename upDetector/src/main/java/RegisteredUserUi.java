@@ -184,106 +184,100 @@ public class RegisteredUserUi {
             
 
         }
-        if(userAnswer.equals("3")) {
-            //Te jabut Konta redirekcija
+if(userAnswer.equals("3")) {
+    app.clear();
+    while(true) {
+        System.out.println("Esat sava konta sadala!");
+        System.out.println("Konta redigesana (1)");
+        System.out.println("Konta dzesana (2)");
+        System.out.println("Lai izietu spied ENTER ");
+        System.out.print("Atbilde: ");
+        userAnswer = answer.nextLine();
+
+        if(userAnswer.equals("")) {
             app.clear();
-            System.out.println("Esat sava konta sadala!");
-            System.out.println("Konta redigesana (1)");
-            System.out.println("Konta dzesana (2)");
-            System.out.println("Lai izietu spied ENTER ");
-            System.out.println("Atbilde: ");
-                userAnswer = answer.nextLine();
-
-
-            if(userAnswer.equals("1")){
-                app.clear();
-                System.out.println("Esat sava konta redigesanas sadala!");
-                System.out.print("Ievadiet savu segvardu lai apstiprinatu: ");
-                String enteredSegvards = answer.nextLine();
-                if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
-                    System.out.println("Nepareizs segvards!");
-                } else {
-                    System.out.println("Ievadier sava konta paroli lai apstiprinatu: ");
-                    String enteredParole = answer.nextLine();
-                    if(this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
-                        System.out.println("Nepareiza parole");
-                    } else {
-                        System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
-                String editChoice = answer.nextLine();
-                    int fieldIndex = -1;
-                    switch (editChoice){
-                    case "1":
-                        fieldIndex = 0;
-                        break;
-                    case "2":
-                        fieldIndex = 1;
-                        break;
-                    case "3": 
-                        fieldIndex = 2;
-                        break;
-                    case "4":
-                        fieldIndex = 3;
-                        break;
-                    case "5":
-                        fieldIndex = 4;
-                        break;
-                    default:
-                        System.out.println("Nederiga atbilde!");
-                        break;
-                    }
-                    if (fieldIndex != -1) {
-                    System.out.print("Ievadiet jauno vertibu: ");
-                    String newValue = answer.nextLine();
-                    updateUserField(fieldIndex, newValue);
-                    if(fieldIndex == 2) {
-                        this.currentSegvards = newValue;
-                    }
-                    if(fieldIndex == 4) {
-                        this.parole = newValue;
-                        }
-                    } 
-                }            
+            break; // ← back to outer menu
         }
-                
-            }
-            if(userAnswer.equals("2")){
+
+        if(userAnswer.equals("1")){
+            app.clear();
+            System.out.println("Esat sava konta redigesanas sadala!");
+            System.out.print("Ievadiet savu segvardu lai apstiprinatu: ");
+            String enteredSegvards = answer.nextLine();
+            System.out.print("Spied ENTER lai atgriztos uz sakuma: ");
+            if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
+                System.out.println("Nepareizs segvards!");
                 app.clear();
-                System.out.println("Esat sava konta dzesanas sadala!");
-                System.out.println("Vai tiesam velaties dzest savu kontu?");
-                System.out.println("Ja (1)");
-                System.out.println("Ne (2)");
-                System.out.println("Atbilde: ");
-                userAnswer = answer.nextLine();
-                if(userAnswer.equals("1")){
-                    System.out.println("Ievadiet savu Segvardu!    ");
-                    String segvards = answer.nextLine();
-                    System.out.println("Ievadiet savu paroli!    ");
-                    String parole = answer.nextLine();
-                    if(CsvFileHandler.checkUserLogin(segvards, parole)){
-                        CsvFileHandler.removeFromCSV("UserData.csv", segvards, 2);
-                        sakums.App();
-                    } else {
-                        if(colors == 1){
-                            System.out.println("\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m");
-                        } else {
-                            System.out.println("[Nepareizs segvards vai parole!]");
-                        }
-                    }
-            }continue;
-            
+                continue;
+            }
+            System.out.print("Ievadiet sava konta paroli lai apstiprinatu: ");
+            String enteredParole = answer.nextLine();
+            System.out.print("Spied ENTER lai atgrieztos uz sakuma: ");
+            if(this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
+                System.out.println("Nepareiza parole!");
+                app.clear();
+                continue;
+            }
+            System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
+            System.out.print("Atbilde: ");
+            String editChoice = answer.nextLine();
+            int fieldIndex = -1;
+            switch (editChoice){
+                case "1": fieldIndex = 0; break;
+                case "2": fieldIndex = 1; break;
+                case "3": fieldIndex = 2; break;
+                case "4": fieldIndex = 3; break;
+                case "5": fieldIndex = 4; break;
+                default: System.out.println("Nederiga atbilde!"); continue;
+            }
+            System.out.print("Ievadiet jauno vertibu: ");
+            String newValue = answer.nextLine();
+            updateUserField(fieldIndex, newValue);
+            if(fieldIndex == 2) this.currentSegvards = newValue;
+            if(fieldIndex == 4) this.parole = newValue;
+            app.clear();
+            continue; // ← back to account menu after edit
+        }
+
+        if(userAnswer.equals("2")){
+            app.clear();
+            System.out.println("Esat sava konta dzesanas sadala!");
+            System.out.println("Vai tiesam velaties dzest savu kontu?");
+            System.out.println("Ja (1)");
+            System.out.println("Ne (2)");
+            System.out.print("Atbilde: ");
+            userAnswer = answer.nextLine();
+            if(userAnswer.equals("1")){
+                System.out.print("Ievadiet savu Segvardu: ");
+                String segvards = answer.nextLine();
+                System.out.print("Ievadiet savu paroli: ");
+                String parole = answer.nextLine();
+                if(CsvFileHandler.checkUserLogin(segvards, parole)){
+                    CsvFileHandler.removeFromCSV("UserData.csv", segvards, 2);
+                    sakums.App();
+                } else {
+                    System.out.println(colors == 1 ? "\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m" : "[Nepareizs segvards vai parole!]");
+                }
+            } else {
+                System.out.println("Konts nav dzests!");
+            }
+            continue; // ← back to account menu
         }
     }
+    continue; // ← back to outer menu after breaking out
+}
+
          
         
     
-
-        if(userAnswer.equals("4")) {
+            if(userAnswer.equals("4")) {
             app.clear();
             System.out.println("Esat sava konta izrakstisanas sadala!");
             System.out.println("    Vai tiesam velaties izrakstities?    ");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
             System.out.print("Atbilde: ");
+            while(true) {
                 userAnswer = answer.nextLine();
             if(userAnswer.equals("1")){
                 colors = 1;
@@ -298,6 +292,7 @@ public class RegisteredUserUi {
                 RegisteredUserUi();
 
             }
+        }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
         if (userAnswer.equals("")) {
