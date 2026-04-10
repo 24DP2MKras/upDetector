@@ -15,6 +15,11 @@ public class RegisteredUserUi {
     private String parole;
     private String currentSegvards;
     public String regex = "^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(/.*)?$";
+    private static final String NAME_REGEX = "^[A-Za-zĀ-ž]{3,50}$";
+    private static final String SURNAME_REGEX = "^[A-Za-zĀ-ž]{4,60}$";
+    private static final String USERNAME_REGEX = "^(?![!@#$]+$)[A-Za-z0-9!@#$]{4,20}$";
+    private static final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
+    private static final String PASSWORD_REGEX = "^(?=.*\\d)[A-Za-z\\d-/.!@#$]{8,20}$";
 
     private String safeReadLine(String prompt, Scanner scanner) {
         try {
@@ -138,14 +143,16 @@ public class RegisteredUserUi {
                     break;
                 case "3":
                     app.clear();
-                    ConsoleColors.println("[Izrakstīšanās veiksmīga!]", ConsoleColors.GREEN);
-                    currentSegvards = "unknown";
-                    this.parole = " ";
-                    return;
+                    if (handleLogout(answer)) {
+                        return;
+                    }
+                    break;
                 case "4":
                     app.clear();
-                    handleProgramExit(answer);
-                    return;
+                    if (handleProgramExit(answer)) {
+                        return;
+                    }
+                    break;
                 case "5":
                     app.clear();
                     handleFavorites(answer);
@@ -195,6 +202,92 @@ public class RegisteredUserUi {
         }
     }
 
+    private boolean promptForCurrentCredentials(Scanner answer) {
+        while (true) {
+            String enteredSegvards = safeReadLine("Ievadiet savu segvardu lai apstiprinatu (ENTER - atpakal): ", answer);
+            if (enteredSegvards.isBlank()) {
+                return false;
+            }
+            if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
+                ConsoleColors.println("[Nepareizs segvards! Lūdzu mēģiniet vēlreiz vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
+                continue;
+            }
+            String enteredParole = safeReadLine("Ievadiet sava konta paroli lai apstiprinatu (ENTER - atpakal): ", answer);
+            if (enteredParole.isBlank()) {
+                return false;
+            }
+            if (this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
+                ConsoleColors.println("[Nepareiza parole! Lūdzu mēģiniet vēlreiz vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
+                continue;
+            }
+            return true;
+        }
+    }
+
+    private String promptForEditedField(int fieldIndex, Scanner answer) {
+        String prompt;
+        String invalidMessage;
+        String regexToCheck = null;
+
+        switch (fieldIndex) {
+            case 0:
+                prompt = "Ievadiet jauno vardu vai spiediet ENTER, lai atgrieztos: ";
+                invalidMessage = "[Ludzu ievadiet derigu vardu (piemeram: Janis)!]";
+                regexToCheck = NAME_REGEX;
+                break;
+            case 1:
+                prompt = "Ievadiet jauno uzvardu vai spiediet ENTER, lai atgrieztos: ";
+                invalidMessage = "[Ludzu ievadiet derigu uzvardu (piemeram: Berzins)!]";
+                regexToCheck = SURNAME_REGEX;
+                break;
+            case 2:
+                prompt = "Ievadiet jauno segvardu vai spiediet ENTER, lai atgrieztos: ";
+                invalidMessage = "[Ludzu ievadiet derigu segvardu (piemeram: ShadowX99)!]";
+                regexToCheck = USERNAME_REGEX;
+                break;
+            case 3:
+                prompt = "Ievadiet jauno e-pastu vai spiediet ENTER, lai atgrieztos: ";
+                invalidMessage = "[Ludzu ievadiet derigu E-pastu (piemeram: example@gmail.com)!]";
+                regexToCheck = EMAIL_REGEX;
+                break;
+            case 4:
+                prompt = "Ievadiet jauno paroli vai spiediet ENTER, lai atgrieztos: ";
+                invalidMessage = "[Ludzu ievadiet derigu paroli (piemeram: qwertyu7)!]";
+                regexToCheck = PASSWORD_REGEX;
+                break;
+            default:
+                return "";
+        }
+
+        while (true) {
+            String newValue = safeReadLine(prompt, answer);
+            if (newValue.isBlank()) {
+                return "";
+            }
+            if (!newValue.matches(regexToCheck)) {
+                ConsoleColors.println(invalidMessage, ConsoleColors.RED);
+                continue;
+            }
+            if (fieldIndex == 2) {
+                if (!newValue.trim().equals(this.currentSegvards.trim()) && CsvFileHandler.checkUserExists(newValue.trim())) {
+                    ConsoleColors.println("[Segvards jau eksiste, ludzu izvelieties citu segvardu!]", ConsoleColors.RED);
+                    continue;
+                }
+            }
+            if (fieldIndex == 4) {
+                String confirmPassword = safeReadLine("Ievadiet paroli velreiz: ", answer);
+                if (confirmPassword.isBlank()) {
+                    return "";
+                }
+                if (!newValue.equals(confirmPassword)) {
+                    ConsoleColors.println("[Paroles nesakrit! Ludzu mēģiniet vēlreiz vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
+                    continue;
+                }
+            }
+            return newValue;
+        }
+    }
+
     private void handleAccountMenu(Scanner answer) {
         while (true) {
             System.out.println("Esat sava konta sadala!");
@@ -209,36 +302,39 @@ public class RegisteredUserUi {
             if (userAnswer.equals("1")) {
                 app.clear();
                 System.out.println("Esat sava konta redigesanas sadala!");
-                String enteredSegvards = safeReadLine("Ievadiet savu segvardu lai apstiprinatu: ", answer);
-                if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
-                    ConsoleColors.println("[Nepareizs segvards!]", ConsoleColors.RED);
+                if (!promptForCurrentCredentials(answer)) {
                     app.clear();
                     continue;
                 }
-                String enteredParole = safeReadLine("Ievadiet sava konta paroli lai apstiprinatu: ", answer);
-                if (this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
-                    ConsoleColors.println("[Nepareiza parole!]", ConsoleColors.RED);
-                    app.clear();
-                    continue;
-                }
-                System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
-                String editChoice = safeReadLine("Atbilde: ", answer);
-                int fieldIndex = -1;
-                switch (editChoice) {
-                    case "1": fieldIndex = 0; break;
-                    case "2": fieldIndex = 1; break;
-                    case "3": fieldIndex = 2; break;
-                    case "4": fieldIndex = 3; break;
-                    case "5": fieldIndex = 4; break;
-                    default:
-                        ConsoleColors.println("[Nederiga atbilde!]", ConsoleColors.RED);
+                while (true) {
+                    System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
+                    System.out.println("Spiediet ENTER, lai atgrieztos uz konta sadaļu.");
+                    String editChoice = safeReadLine("Atbilde: ", answer);
+                    if (editChoice.isBlank()) {
+                        app.clear();
+                        break;
+                    }
+                    int fieldIndex = -1;
+                    switch (editChoice) {
+                        case "1": fieldIndex = 0; break;
+                        case "2": fieldIndex = 1; break;
+                        case "3": fieldIndex = 2; break;
+                        case "4": fieldIndex = 3; break;
+                        case "5": fieldIndex = 4; break;
+                        default:
+                            ConsoleColors.println("[Nederiga atbilde!]", ConsoleColors.RED);
+                            continue;
+                    }
+                    String newValue = promptForEditedField(fieldIndex, answer);
+                    if (newValue.isBlank()) {
                         continue;
+                    }
+                    updateUserField(fieldIndex, newValue);
+                    if (fieldIndex == 2) this.currentSegvards = newValue;
+                    if (fieldIndex == 4) this.parole = newValue;
+                    ConsoleColors.println("[Izmainas ir saglabatas.]", ConsoleColors.GREEN);
+                    app.clear();
                 }
-                String newValue = safeReadLine("Ievadiet jauno vertibu: ", answer);
-                updateUserField(fieldIndex, newValue);
-                if (fieldIndex == 2) this.currentSegvards = newValue;
-                if (fieldIndex == 4) this.parole = newValue;
-                app.clear();
             } else if (userAnswer.equals("2")) {
                 app.clear();
                 System.out.println("Esat sava konta dzesanas sadala!");
@@ -247,14 +343,10 @@ public class RegisteredUserUi {
                 System.out.println("Ne (2)");
                 String deleteAnswer = safeReadLine("Atbilde: ", answer);
                 if (deleteAnswer.equals("1")) {
-                    String segvards = safeReadLine("Ievadiet savu Segvardu: ", answer);
-                    String parole = safeReadLine("Ievadiet savu paroli: ", answer);
-                    if (CsvFileHandler.checkUserLogin(segvards, parole)) {
-                        CsvFileHandler.removeFromCSV("UserData.csv", segvards, 2);
+                    if (promptForCurrentCredentials(answer)) {
+                        CsvFileHandler.removeFromCSV("UserData.csv", this.currentSegvards, 2);
                         ConsoleColors.println("[Konts dzests!]", ConsoleColors.GREEN);
                         return;
-                    } else {
-                        ConsoleColors.println("[Nepareizs segvards vai parole!]", ConsoleColors.RED);
                     }
                 } else if (deleteAnswer.equals("2")) {
                     ConsoleColors.println("[Konta dzesana atcelta.]", ConsoleColors.YELLOW);
@@ -268,20 +360,55 @@ public class RegisteredUserUi {
         }
     }
 
-    private void handleProgramExit(Scanner answer) {
-        System.out.println("Vai tiesam velaties izslegt programmu? ");
-        System.out.println("Ja (1)");
-        System.out.println("Ne (2)");
-        String userAnswer = safeReadLine("Atbilde: ", answer);
-        if (userAnswer.equals("1")) {
-            ConsoleColors.println("[Programma tiek izslēgta...]", ConsoleColors.GREEN);
-            app.clear();
-            app.exit();
-        } else if (userAnswer.equals("2")) {
-            ConsoleColors.println("[Programma nav izslegta!]", ConsoleColors.YELLOW);
-            app.clear();
-        } else {
-            ConsoleColors.println("[Nederiga izvele!]", ConsoleColors.RED);
+    private boolean handleLogout(Scanner answer) {
+        while (true) {
+            System.out.println("Vai tiesam velaties izrakstities?");
+            System.out.println("Ja (1)");
+            System.out.println("Ne (2)");
+            System.out.println("Spiediet ENTER, lai atgrieztos uz konta sadaļu.");
+            String userAnswer = safeReadLine("Atbilde: ", answer);
+            if (userAnswer.isBlank()) {
+                app.clear();
+                return false;
+            }
+            if (userAnswer.equals("1")) {
+                ConsoleColors.println("[Izrakstīšanās veiksmīga!]", ConsoleColors.GREEN);
+                currentSegvards = "unknown";
+                this.parole = " ";
+                return true;
+            }
+            if (userAnswer.equals("2")) {
+                ConsoleColors.println("[Izrakstīšanās atcelta.]", ConsoleColors.YELLOW);
+                app.clear();
+                return false;
+            }
+            ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1 vai 2 vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
+        }
+    }
+
+    private boolean handleProgramExit(Scanner answer) {
+        while (true) {
+            System.out.println("Vai tiesam velaties izslegt programmu?");
+            System.out.println("Ja (1)");
+            System.out.println("Ne (2)");
+            System.out.println("Spiediet ENTER, lai atgrieztos uz lietotaja sadaļu.");
+            String userAnswer = safeReadLine("Atbilde: ", answer);
+            if (userAnswer.isBlank()) {
+                app.clear();
+                return false;
+            }
+            if (userAnswer.equals("1")) {
+                ConsoleColors.println("[Programma tiek izslēgta...]", ConsoleColors.GREEN);
+                app.clear();
+                app.exit();
+                return true;
+            }
+            if (userAnswer.equals("2")) {
+                ConsoleColors.println("[Programma nav izslegta!]", ConsoleColors.YELLOW);
+                app.clear();
+                return false;
+            }
+            ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1 vai 2 vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
         }
     }
 

@@ -36,7 +36,7 @@ public class CsvFileHandler {
         try {
             File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
-                System.out.println("Data folder not found");
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
@@ -76,7 +76,7 @@ public class CsvFileHandler {
         try {
             File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
-                System.out.println("Data folder not found");
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
@@ -105,7 +105,7 @@ public class CsvFileHandler {
         try {
             File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
-                System.out.println("Data folder not found");
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
@@ -239,7 +239,7 @@ public class CsvFileHandler {
         try {
             File dataFolder = ensureDataFolder();
             if (dataFolder == null) {
-                System.out.println("Data folder not found");
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
@@ -281,7 +281,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error checking user: " + e.getMessage());
+            ConsoleColors.println("[Kluda parbaudot lietotaju: ]" + e.getMessage(), ConsoleColors.RED);
         }
         return false;
     }
@@ -291,20 +291,20 @@ public class CsvFileHandler {
         try {
             File dataFolder = ensureDataFolder();
             if (dataFolder == null || !dataFolder.isDirectory()) {
-                System.out.println("Data folder not found");
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
             File[] files = dataFolder.listFiles((dir, name) -> name.endsWith(".csv"));
             if (files != null && files.length > 0) {
-                System.out.println("CSV files in data folder:");
+                System.out.println("CSV faili data mapē:");
                 for (File file : files) {
                     System.out.println("- " + file.getName());
                 }
             } else {
-                System.out.println("No CSV files found in data folder.");
+                ConsoleColors.println("[Nav atrastu CSV failu data mapē.]", ConsoleColors.YELLOW);
             }
         } catch (Exception e) {
-            System.out.println("Error listing CSV files: " + e.getMessage());
+            ConsoleColors.println("[Kluda izvadot CSV failus: ]" + e.getMessage(), ConsoleColors.RED);
         }
     }
 
@@ -365,7 +365,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            System.out.println("Error loading users: " + e.getMessage());
+            ConsoleColors.println("[Kluda ieladejot lietotajus: ]" + e.getMessage(), ConsoleColors.RED);
         }
         return users;
     }

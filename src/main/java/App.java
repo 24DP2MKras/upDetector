@@ -78,7 +78,8 @@ public class App {
                 app.clear();
                 continue;
             } else if(userAnswer.equals("3")){
-                break;
+                app.clear();
+                continue;
             } else {
                 ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1, 2 vai 3.]", ConsoleColors.RED);
             }
