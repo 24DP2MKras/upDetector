@@ -7,23 +7,29 @@ import java.util.Scanner;
 
 public class CsvFileHandler {
 
-    public static File ensureDataFolder() {
-        File dataFolder = new File(System.getProperty("user.dir"), "data");
-    
-        if (!dataFolder.exists()) {
-            if (dataFolder.mkdirs()) {
-                if (App.colors == 1) {
-                    ConsoleColors.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]", ConsoleColors.GREEN);
-                } else {
+  public static File ensureDataFolder() {
+    File dir = new File(System.getProperty("user.dir"));
+    // Search upward for the project root (has the marker file)
+    for (int i = 0; i < 10; i++) {
+        File marker = new File(dir, "upDetector.marker");
+        if (marker.exists()) {
+            File dataFolder = new File(dir, "data");
+            if (!dataFolder.exists()) {
+                if (dataFolder.mkdirs()) {
                     System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
+                } else {
+                    System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
                 }
-            } else {
-                System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
             }
+            return dataFolder;
         }
-        return dataFolder;
+        if (dir.getParentFile() != null) {
+            dir = dir.getParentFile();
+        } else break;
     }
-
+    // Fallback
+    return new File(System.getProperty("user.dir"), "data");
+}
 
     // Save users list to CSV (compatible with appFunkcijas)
     public static void addUsersToCSV(List<Lietotajs> users, String fileName) {

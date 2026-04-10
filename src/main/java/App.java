@@ -59,11 +59,17 @@ public class App {
         }
         if(userAnswer.equals("3")) {
             app.clear();
-            System.out.println("    Vai velies tekstu ar krasam?   ");
-            System.out.println("Ja (1)");
-            System.out.println("Ne (2)");
-            System.out.println("Atpakal (4)");
-            userAnswer = safeReadLine("Atbilde: ", answer);
+            System.out.println("       -Programma upDetector-  ");
+            System.out.println(" __________________________________");
+            System.out.println("|    Vai velies tekstu ar krasam?  |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            System.out.println("| Ja (1)                           |");
+            System.out.println("| Ne (2)                           |");
+            System.out.println("| Atpakal (3)                      |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            System.out.print("|Atbilde: ");
+                userAnswer = answer.nextLine();
+            System.out.println("____________________________________");
             if(userAnswer.equals("1")){
                 colors = 1;
                 ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
@@ -84,10 +90,16 @@ public class App {
         }
         if (userAnswer.equals("4")) {
             //opcija iet uz sakumu jabut seit
-            System.out.println("Vai tiesam velaties izslegt programmu? ");
-            System.out.println("Ja (1)");
-            System.out.println("Ne (2)");
-            userAnswer = safeReadLine("Atbilde: ", answer);
+             System.out.println("       -Programma upDetector-  ");
+            System.out.println(" ___________________________________4");
+            System.out.println("|    Vai velies izslegt programmu?  |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            System.out.println("| Ja (1)                            |");
+            System.out.println("| Ne (2)                            |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            System.out.print("|Atbilde: ");
+                userAnswer = answer.nextLine();
+            System.out.println("____________________________________");
             if(userAnswer.equals("1")){
                 app.clear();
                 app.exit();
