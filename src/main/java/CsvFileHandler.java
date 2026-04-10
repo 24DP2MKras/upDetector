@@ -173,8 +173,13 @@ public class CsvFileHandler {
                             System.out.println((i + 1) + " - " + fieldNames[i]);
                         }
                         System.out.print("Izvelaties ko mainit: ");
-                        int choice = input.nextInt();
-                        input.nextLine();
+                        String choiceInput = input.nextLine().trim();
+                        int choice = -1;
+                        try {
+                            choice = Integer.parseInt(choiceInput);
+                        } catch (NumberFormatException e) {
+                            ConsoleColors.println("[Nepareiza izvele!]", ConsoleColors.RED);
+                        }
 
                         if (choice >= 1 && choice <= fieldNames.length && choice <= row.length) {
                             int fieldToEdit = choice - 1;
@@ -379,15 +384,12 @@ public class CsvFileHandler {
                 String line = br.readLine(); // Skip header
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
-                    if (parts.length >= 7) {
+                    if (parts.length >= 4) {
                         Map<String, String> website = new HashMap<>();
-                        website.put("VietnesID", parts[0]);
-                        website.put("VietnesNosaukums", parts[1]);
+                        website.put("Segvards", parts[0]);
+                        website.put("URL", parts[1]);
                         website.put("Ping", parts[2]);
-                        website.put("ParbaudesLaiks", parts[3]);
-                        website.put("Statuss", parts[4]);
-                        website.put("Iecienita", parts[5]);
-                        website.put("Segvards", parts[6]);
+                        website.put("Datums/Laiks", parts[3]);
                         websites.add(website);
                     }
                 }

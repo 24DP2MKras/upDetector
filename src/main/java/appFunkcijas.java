@@ -112,20 +112,26 @@ public class appFunkcijas {
         clear();
         System.out.println("    Tu esi pierakstisanas sadala!   ");
         while(true) {
-            String SegvardaLauks = safeReadLine("Ievadiet sava konta Segvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
-            if(SegvardaLauks.isEmpty()) break;
-        if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
-            String ParolesLauks = readPassword("Ievadiet savu paroli: ");
-            if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {
-                RegisteredUserUi ui = new RegisteredUserUi(SegvardaLauks, ParolesLauks);
-                ConsoleColors.println("[Pierakstisanas veiksmiga!]", ConsoleColors.GREEN);
-                ui.RegisteredUserUi();
-            } else {
-                ConsoleColors.println("[Nepareiza parole!]", ConsoleColors.RED);
+            try {
+                String SegvardaLauks = safeReadLine("Ievadiet sava konta Segvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
+                if(SegvardaLauks.isEmpty()) break;
+                if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
+                    String ParolesLauks = readPassword("Ievadiet savu paroli: ");
+                    if(CsvFileHandler.checkUserLogin(SegvardaLauks, ParolesLauks)) {
+                        RegisteredUserUi ui = new RegisteredUserUi(SegvardaLauks, ParolesLauks);
+                        ConsoleColors.println("[Pierakstisanas veiksmiga!]", ConsoleColors.GREEN);
+                        ui.RegisteredUserUi();
+                        break;
+                    } else {
+                        ConsoleColors.println("[Nepareiza parole!]", ConsoleColors.RED);
+                    }
+                } else {
+                    ConsoleColors.println("[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]", ConsoleColors.RED);
+                }
+            } catch (Exception e) {
+                ConsoleColors.println("[Ievades kluda: " + e.getMessage() + "]", ConsoleColors.RED);
+                break;
             }
-        } else {
-            ConsoleColors.println("[Segvards nesakrit vai nav registrets, parliecinies ka ievadiji to pareizi!]", ConsoleColors.RED);
-        }
         }
     }
     public void exit() {

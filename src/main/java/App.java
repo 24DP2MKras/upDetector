@@ -46,16 +46,14 @@ public class App {
                 register.add(newUser);
                 ConsoleColors.println("[Registrācija veiksmīga!]", ConsoleColors.GREEN);
             }
-            App();
-            
-            
+            continue;
         }
         if(userAnswer.equals("2")) {
             //Te jabut Pierakstisanas redirekcija
             app.clear();
             appFunkcijas login = new appFunkcijas();
             login.pierakstisanas();
-            App();
+            continue;
         }
         if(userAnswer.equals("3")) {
             app.clear();
@@ -67,24 +65,22 @@ public class App {
             System.out.println("| Ne (2)                           |");
             System.out.println("| Atpakal (3)                      |");
             System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.print("|Atbilde: ");
-                userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("|Atbilde: ", answer);
             System.out.println("____________________________________");
             if(userAnswer.equals("1")){
                 colors = 1;
                 ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                 app.clear();
-                App();
-            }
-            if(userAnswer.equals("2")) {
+                continue;
+            } else if(userAnswer.equals("2")) {
                 colors = 0;
                 ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                 app.clear();
-                App();
-            } else if(userAnswer.equals("4")){
+                continue;
+            } else if(userAnswer.equals("3")){
                 break;
             } else {
-                ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1, 2 vai 4.]", ConsoleColors.RED);
+                ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1, 2 vai 3.]", ConsoleColors.RED);
             }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
@@ -97,8 +93,7 @@ public class App {
             System.out.println("| Ja (1)                            |");
             System.out.println("| Ne (2)                            |");
             System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.print("|Atbilde: ");
-                userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("|Atbilde: ", answer);
             System.out.println("____________________________________");
             if(userAnswer.equals("1")){
                 app.clear();
@@ -106,7 +101,7 @@ public class App {
             } else if(userAnswer.equals("2")) {
                 System.out.println("Programma nav izslegta!");
                 app.clear();
-                App();
+                continue;
             } else {
                 ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1 vai 2.]", ConsoleColors.RED);
             }
