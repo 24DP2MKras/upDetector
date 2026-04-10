@@ -13,7 +13,7 @@ public class CsvFileHandler {
         if (!dataFolder.exists()) {
             if (dataFolder.mkdirs()) {
                 if (App.colors == 1) {
-                    System.out.println("\u001B[32m[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]\u001B[0m");
+                    ConsoleColors.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]", ConsoleColors.GREEN);
                 } else {
                     System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
                 }
@@ -45,18 +45,10 @@ public class CsvFileHandler {
                     writer.write(u.toString());
                     writer.newLine();
                 }
-                if (App.colors == 1) {
-                    System.out.println("\u001B[32m[Lietotajs ir registrets]\u001B[0m");
-                } else {
-                    System.out.println("[Lietotajs ir registrets]");
-                }
+                ConsoleColors.println("[Lietotajs ir registrets]", ConsoleColors.GREEN);
             }
         } catch (IOException e) {
-            if (App.colors == 1) {
-                System.out.println("\u001B[31m[Kluda saglabajot lietotaju: " + e.getMessage() + "]\u001B[0m");
-            } else {
-                System.out.println("[Kluda saglabajot lietotaju: " + e.getMessage() + "]");
-            }
+            ConsoleColors.println("[Kluda saglabajot lietotaju: " + e.getMessage() + "]", ConsoleColors.RED);
             e.printStackTrace();
         }
     }
@@ -92,17 +84,9 @@ public class CsvFileHandler {
                 writer.write(data);
                 writer.newLine();
             }
-            if (App.colors == 1) {
-                System.out.println("\u001B[32m[Dati saglabati]\u001B[0m");
-            } else {
-                System.out.println("[Dati saglabati]");
-            }
+            ConsoleColors.println("[Dati saglabati]", ConsoleColors.GREEN);
         } catch (IOException e) {
-            if (App.colors == 1) {
-                System.out.println("\u001B[31m[Kluda saglabajot: " + e.getMessage() + "]\u001B[0m");
-            } else {
-                System.out.println("[Kluda saglabajot: " + e.getMessage() + "]");
-            }
+            ConsoleColors.println("[Kluda saglabajot: " + e.getMessage() + "]", ConsoleColors.RED);
         }
     }
 
@@ -130,11 +114,7 @@ public class CsvFileHandler {
                     }
                 }
             } catch (Exception e) {
-                if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Kluda lasot CSV failu]\u001B[0m");
-                } else {
-                    System.out.println("[Kluda lasot CSV failu]");
-                }
+                ConsoleColors.println("[Kluda lasot CSV failu]", ConsoleColors.RED);
                 e.printStackTrace();
                 return;
             }
@@ -149,17 +129,9 @@ public class CsvFileHandler {
                 reader.close();
                 writer.close();
                 new File(tempFile).delete();
-                if (App.colors == 1) {
-                    System.out.println("\u001B[32m[Ieraksts nonemts! CSV atjaunots.]\u001B[0m");
-                } else {
-                    System.out.println("[Ieraksts nonemts! CSV atjaunots.]");
-                }
+                ConsoleColors.println("[Ieraksts nonemts! CSV atjaunots.]", ConsoleColors.GREEN);
             } catch (IOException e) {
-                if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Kluda aizvietojot failu: " + e.getMessage() + "]\u001B[0m");
-                } else {
-                    System.out.println("[Kluda aizvietojot failu: " + e.getMessage() + "]");
-                }
+                ConsoleColors.println("[Kluda aizvietojot failu: " + e.getMessage() + "]", ConsoleColors.RED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,11 +161,7 @@ public class CsvFileHandler {
                     if (row.length > fieldIndex && row[fieldIndex].trim().equals(identifier.trim())) {
                         recordFound = true;
 
-                        if (App.colors == 1) {
-                            System.out.println("\u001B[33mIeraksts atrasts!\u001B[0m");
-                        } else {
-                            System.out.println("Ieraksts atrasts!");
-                        }
+                        ConsoleColors.println("Ieraksts atrasts!", ConsoleColors.YELLOW);
 
                         for (int i = 0; i < fieldNames.length && i < row.length; i++) {
                             System.out.println((i + 1) + " - " + fieldNames[i]);
@@ -208,17 +176,9 @@ public class CsvFileHandler {
                             String newValue = input.nextLine();
                             row[fieldToEdit] = newValue;
 
-                            if (App.colors == 1) {
-                                System.out.println("\u001B[32m[Vertiba atjaunota!]\u001B[0m");
-                            } else {
-                                System.out.println("[Vertiba atjaunota!]");
-                            }
+                            ConsoleColors.println("[Vertiba atjaunota!]", ConsoleColors.GREEN);
                         } else {
-                            if (App.colors == 1) {
-                                System.out.println("\u001B[31m[Nepareiza izvele!]\u001B[0m");
-                            } else {
-                                System.out.println("[Nepareiza izvele!]");
-                            }
+                            ConsoleColors.println("[Nepareiza izvele!]", ConsoleColors.RED);
                         }
 
                         StringBuilder updatedLine = new StringBuilder();
@@ -233,21 +193,13 @@ public class CsvFileHandler {
                 }
 
                 if (!recordFound) {
-                    if (App.colors == 1) {
-                        System.out.println("\u001B[31m[Ieraksts nav atrasts!]\u001B[0m");
-                    } else {
-                        System.out.println("[Ieraksts nav atrasts!]");
-                    }
+                    ConsoleColors.println("[Ieraksts nav atrasts!]", ConsoleColors.RED);
                     new File(tempFile).delete();
                     return;
                 }
 
             } catch (Exception e) {
-                if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Kluda apstradejot CSV failu]\u001B[0m");
-                } else {
-                    System.out.println("[Kluda apstradejot CSV failu]");
-                }
+                ConsoleColors.println("[Kluda apstradejot CSV failu]", ConsoleColors.RED);
                 e.printStackTrace();
                 return;
             }
@@ -262,17 +214,9 @@ public class CsvFileHandler {
                 reader.close();
                 writer.close();
                 new File(tempFile).delete();
-                if (App.colors == 1) {
-                    System.out.println("\u001B[32m[Redigesana pabeigta!]\u001B[0m");
-                } else {
-                    System.out.println("[Redigesana pabeigta!]");
-                }
+                ConsoleColors.println("[Redigesana pabeigta!]", ConsoleColors.GREEN);
             } catch (IOException e) {
-                if (App.colors == 1) {
-                    System.out.println("\u001B[31m[Kluda aizvietojot failu: " + e.getMessage() + "]\u001B[0m");
-                } else {
-                    System.out.println("[Kluda aizvietojot failu: " + e.getMessage() + "]");
-                }
+                ConsoleColors.println("[Kluda aizvietojot failu: " + e.getMessage() + "]", ConsoleColors.RED);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -295,11 +239,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            if (App.colors == 1) {
-                System.out.println("\u001B[31m[Kluda lasot CSV failu]\u001B[0m");
-            } else {
-                System.out.println("[Kluda lasot CSV failu]");
-            }
+            ConsoleColors.println("[Kluda lasot CSV failu]", ConsoleColors.RED);
             e.printStackTrace();
         }
     }
@@ -383,12 +323,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            if(App.colors == 1) {
-            System.out.println("\\\\u001B[31m[Kluda parbaudot pierakstisanos ]\\\\u001B[0m" + e.getMessage());
-            }
-            if(App.colors == 0) {
-            System.out.println("[Kluda parbaudot pierakstisanos ]" + e.getMessage());
-            }
+            ConsoleColors.println("[Kluda parbaudot pierakstisanos ]" + e.getMessage(), ConsoleColors.RED);
         }
         return false;
     }
@@ -452,12 +387,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            if(App.colors == 1) {
-            System.out.println("\\\\u001B[31m[Kluda palaizot csv failus: ]\\\\u001B[0m" + e.getMessage());
-            }
-            if(App.colors == 0) {
-            System.out.println("[Kluda palaizot csv failus: ]" + e.getMessage());
-            }
+            ConsoleColors.println("[Kluda palaizot csv failus: ]" + e.getMessage(), ConsoleColors.RED);
         }
         return websites;
     }
@@ -485,12 +415,7 @@ public class CsvFileHandler {
                 }
             }
         } catch (IOException e) {
-            if(App.colors == 1) {
-            System.out.println("\\\\u001B[31m[Kluda palaizot milakos ierakstus: ]\\\\u001B[0m" + e.getMessage());
-            }
-            if(App.colors == 0) {
-            System.out.println("[Kluda palaizot milakos ierakstus: ]" + e.getMessage());
-            }
+            ConsoleColors.println("[Kluda palaizot milakos ierakstus: ]" + e.getMessage(), ConsoleColors.RED);
         }
         return favorites;
     }
@@ -506,8 +431,7 @@ public class CsvFileHandler {
         }
         return userWebsites;
     }
-
-    // Get favorite websites for a specific user
+// Get favorite websites for a specific user
     public static List<String> getUserFavorites(String segvards) {
         List<String> favorites = new ArrayList<>();
         List<Map<String, String>> allFavorites = loadFavorites();

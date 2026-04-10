@@ -12,11 +12,21 @@ public class RegisteredUserUi {
     appFunkcijas app = new appFunkcijas();
     App sakums = new App();
     RegisteredUserFunkcijas pingTests = new RegisteredUserFunkcijas();
-    public static int colors = 1;
     String userAnswer = "";
     private String parole;
     private String currentSegvards;
     public String regex = "^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(/.*)?$";
+
+    private String safeReadLine(String prompt, Scanner scanner) {
+        try {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        } catch (Exception e) {
+            ConsoleColors.println("[Ievades kluda: " + e.getMessage() + "]", ConsoleColors.RED);
+            return "";
+        }
+    }
+
     private void updateUserField(int fieldIndex, String newValue) {
     if (currentSegvards == null || currentSegvards.isBlank()) {
         System.out.println("Segvards nav iestatits.");
@@ -69,7 +79,7 @@ public class RegisteredUserUi {
             bw.write(outputLine);
             bw.newLine();
         }
-        System.out.println("[Vertiba atjaunota!]");
+        ConsoleColors.println("[Vertiba atjaunota!]", ConsoleColors.GREEN);
     } catch (IOException e) {
         System.out.println("Error writing file: " + e.getMessage());
     }
@@ -90,10 +100,8 @@ public class RegisteredUserUi {
         Scanner answer = new Scanner(System.in);
         app.clear();
         if (currentSegvards.equals("unknown")) {
-            System.out.print("Ievadiet segvardu: ");
-            String segvards = answer.nextLine();
-            System.out.print("Ievadiet paroli: ");
-            String parole = answer.nextLine();
+            String segvards = safeReadLine("Ievadiet segvardu: ", answer);
+            String parole = safeReadLine("Ievadiet paroli: ", answer);
             if (CsvFileHandler.checkUserLogin(segvards, parole)) {
                 this.currentSegvards = segvards;
                 this.parole = parole;
@@ -116,45 +124,47 @@ public class RegisteredUserUi {
         System.out.println("| Izslegt programmu (4)                                                  |");
         System.out.println("| Milako vietnu parbaude (5)                                             |");
         System.out.println("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
-        System.out.print("|Atbilde: "); 
-        String userAnswer = answer.nextLine();
+        String userAnswer = safeReadLine("|Atbilde: ", answer);
         if(userAnswer.equals("1")) {
-            //Te jabut Vietnes parbaudes redirekcija
             app.clear();
             System.out.println("Esat vietnes parbaudes sadala!");
             System.out.println("Ievadiet vietni, kuru gribat ierakstīt un saglabat");
             System.out.println("Ievadiet vietnes nosaukumu (HTTPS) (piemeram [https://www.e-klase.lv]: ");
             System.out.println("Lai izietu spied ENTER ");
-            System.out.print("Atbilde: ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("")) {
-                app.clear();
-                continue;
-            } else if (userAnswer.matches(regex)){
-            pingTests.httpPinger(userAnswer, currentSegvards);
-            HttpPing ieraksts = pingTests.pedejoReiziSkatits();
-            System.out.println(ieraksts);
-            System.out.println();
-            System.out.println("Vai gribat pievienot so vietni milakajam vietnem?");
-            System.out.println("Ja (1)");
-            System.out.println("Ne (2)");
-            System.out.print("Atbilde: ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("1")){
-                HttpPing ieraksts1 = pingTests.pedejoReiziSkatits1();
-                
+            while (true) {
+                String websiteInput = safeReadLine("Atbilde: ", answer);
+                if (websiteInput.equals("")) {
+                    app.clear();
+                    break;
+                }
+                if (!websiteInput.matches(regex)) {
+                    ConsoleColors.println("[Nederigs vietnes URL! Lūdzu ievadiet URL formātā https://... ]", ConsoleColors.RED);
+                    continue;
+                }
+                pingTests.httpPinger(websiteInput, currentSegvards);
+                HttpPing ieraksts = pingTests.pedejoReiziSkatits();
+                System.out.println(ieraksts);
+                System.out.println();
+                System.out.println("Vai gribat pievienot so vietni milakajam vietnem?");
+                System.out.println("Ja (1)");
+                System.out.println("Ne (2)");
+                String favoriteAnswer = safeReadLine("Atbilde: ", answer);
+                if(favoriteAnswer.equals("1")){
+                    HttpPing ieraksts1 = pingTests.pedejoReiziSkatits1();
+                    ConsoleColors.println("[Vietne pievienota milakajam vietnem!]", ConsoleColors.GREEN);
+                } else if(favoriteAnswer.equals("2")){
+                    ConsoleColors.println("[Vietne netika pievienota milakajam vietnem!]", ConsoleColors.YELLOW);
+                } else {
+                    ConsoleColors.println("[Nederiga izvele! Vietne netika pievienota.]", ConsoleColors.RED);
+                }
+                String exitAnswer = safeReadLine("Lai izietu spied ENTER ", answer);
+                if(exitAnswer.equals("")) {
+                    app.clear();
+                    exit();
+                }
+                break;
             }
-            if(userAnswer.equals("2")){
-                System.out.println("Vietne nav pievienota milakajam vietnem!");
-            }
-            System.out.print("Lai izietu spied ENTER ");
-            userAnswer = answer.nextLine();
-            if(userAnswer.equals("")) {
-                app.clear();
-                exit();
-            }
-            
-        }
+            continue;
     }
     if(userAnswer.equals("2")) {
     app.clear();
@@ -163,8 +173,7 @@ public class RegisteredUserUi {
         System.out.println("Konta redigesana (1)");
         System.out.println("Konta dzesana (2)");
         System.out.println("Lai izietu spied ENTER ");
-        System.out.print("Atbilde: ");
-        userAnswer = answer.nextLine();
+        userAnswer = safeReadLine("Atbilde: ", answer);
 
         if(userAnswer.equals("")) {
             app.clear();
@@ -174,25 +183,20 @@ public class RegisteredUserUi {
         if(userAnswer.equals("1")){
             app.clear();
             System.out.println("Esat sava konta redigesanas sadala!");
-            System.out.print("Ievadiet savu segvardu lai apstiprinatu: ");
-            String enteredSegvards = answer.nextLine();
-            System.out.print("Spied ENTER lai atgriztos uz sakuma: ");
+            String enteredSegvards = safeReadLine("Ievadiet savu segvardu lai apstiprinatu: ", answer);
             if (!enteredSegvards.trim().equals(this.currentSegvards.trim())) {
                 System.out.println("Nepareizs segvards!");
                 app.clear();
                 continue;
             }
-            System.out.print("Ievadiet sava konta paroli lai apstiprinatu: ");
-            String enteredParole = answer.nextLine();
-            System.out.print("Spied ENTER lai atgrieztos uz sakuma: ");
+            String enteredParole = safeReadLine("Ievadiet sava konta paroli lai apstiprinatu: ", answer);
             if(this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
                 System.out.println("Nepareiza parole!");
                 app.clear();
                 continue;
             }
             System.out.println("Ko jus velaties rediget? (Vards (1), Uzvards (2), Segvards (3), E-pasts (4), Parole (5))");
-            System.out.print("Atbilde: ");
-            String editChoice = answer.nextLine();
+            String editChoice = safeReadLine("Atbilde: ", answer);
             int fieldIndex = -1;
             switch (editChoice){
                 case "1": fieldIndex = 0; break;
@@ -202,8 +206,7 @@ public class RegisteredUserUi {
                 case "5": fieldIndex = 4; break;
                 default: System.out.println("Nederiga atbilde!"); continue;
             }
-            System.out.print("Ievadiet jauno vertibu: ");
-            String newValue = answer.nextLine();
+            String newValue = safeReadLine("Ievadiet jauno vertibu: ", answer);
             updateUserField(fieldIndex, newValue);
             if(fieldIndex == 2) this.currentSegvards = newValue;
             if(fieldIndex == 4) this.parole = newValue;
@@ -217,21 +220,21 @@ public class RegisteredUserUi {
             System.out.println("Vai tiesam velaties dzest savu kontu?");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
-            System.out.print("Atbilde: ");
-            userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("Atbilde: ", answer);
             if(userAnswer.equals("1")){
-                System.out.print("Ievadiet savu Segvardu: ");
-                String segvards = answer.nextLine();
-                System.out.print("Ievadiet savu paroli: ");
-                String parole = answer.nextLine();
+                String segvards = safeReadLine("Ievadiet savu Segvardu: ", answer);
+                String parole = safeReadLine("Ievadiet savu paroli: ", answer);
                 if(CsvFileHandler.checkUserLogin(segvards, parole)){
                     CsvFileHandler.removeFromCSV("UserData.csv", segvards, 2);
+                    ConsoleColors.println("[Konts dzests!]", ConsoleColors.GREEN);
                     sakums.App();
                 } else {
-                    System.out.println(colors == 1 ? "\u001B[31m[Nepareizs segvards vai parole!]\u001B[0m" : "[Nepareizs segvards vai parole!]");
+                    ConsoleColors.println("[Nepareizs segvards vai parole!]", ConsoleColors.RED);
                 }
+            } else if(userAnswer.equals("2")) {
+                ConsoleColors.println("[Konta dzesana atcelta.]", ConsoleColors.YELLOW);
             } else {
-                System.out.println("Konts nav dzests!");
+                ConsoleColors.println("[Nederiga izvele!]", ConsoleColors.RED);
             }
             continue; // ← back to account menu
         }
@@ -244,23 +247,24 @@ public class RegisteredUserUi {
             System.out.println("    Vai tiesam velaties izrakstities?    ");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
-            System.out.print("Atbilde: ");
             while(true) {
-                userAnswer = answer.nextLine();
+                userAnswer = safeReadLine("Atbilde: ", answer);
             if(userAnswer.equals("1")){
-                colors = 1;
-                System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+                App.colors = 1;
+                ConsoleColors.println("[Izrakstīšanās veiksmīga!]", ConsoleColors.GREEN);
                 currentSegvards = "unknown";
                 parole = " ";
                 app.clear();
                 sakums.App();
             }
             if(userAnswer.equals("2")) {
-                colors = 0;
-                System.out.println("[Komanda izpildita]");
+                App.colors = 0;
+                ConsoleColors.println("[Izrakstīšanās atcelta]", ConsoleColors.YELLOW);
                 app.clear();
                 RegisteredUserUi();
 
+            } else {
+                ConsoleColors.println("[Nederiga izvele!]", ConsoleColors.RED);
             }
         }
     }
@@ -268,21 +272,22 @@ public class RegisteredUserUi {
                 System.out.println("Vai tiesam velaties izslegt programmu? ");
                 System.out.println("Ja (1)");
                 System.out.println("Ne (2)");
-                System.out.print("Atbilde: ");
-                userAnswer = answer.nextLine();
+                userAnswer = safeReadLine("Atbilde: ", answer);
                 if(userAnswer.equals("1")){
+                    ConsoleColors.println("[Programma tiek izslēgta...]", ConsoleColors.GREEN);
                     app.clear();
                     app.exit();
-                }
-                if(userAnswer.equals("2")) {
-                    System.out.println("Programma nav izslegta!");
+                } else if(userAnswer.equals("2")) {
+                    ConsoleColors.println("[Programma nav izslēgta!]", ConsoleColors.YELLOW);
                     app.clear();
                     RegisteredUserUi();
+                } else {
+                    ConsoleColors.println("[Nederiga izvele!]", ConsoleColors.RED);
+                }
         }
-    }
             if (userAnswer.equals("5")) {
                 app.clear();
-                System.out.println("Esat milako vietnu sadala!");
+                ConsoleColors.println("[Esat milako vietnu sadala!]", ConsoleColors.GREEN);
                 RegisteredUserFunkcijas pingFave = new RegisteredUserFunkcijas();
                 List<Map<String, String>> favorites = CsvFileHandler.loadFavorites();
                 boolean found = false;
@@ -295,9 +300,13 @@ public class RegisteredUserUi {
                     pingFave.httpPinger(site, user);
                 }
             }
+            if (found) {
+                ConsoleColors.println("[Visas milakas vietnes ir parbauditas!]", ConsoleColors.GREEN);
+            } else {
+                ConsoleColors.println("[Nav milako vietnu parbaudei.]", ConsoleColors.YELLOW);
+            }
             System.out.println();
-            System.out.print("Nospied ENTER lai tiktu atpakal: ");
-            userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("Nospied ENTER lai tiktu atpakal: ", answer);
             if(userAnswer.equals("")) {
                 app.clear();
                 RegisteredUserUi();
@@ -309,18 +318,21 @@ public class RegisteredUserUi {
                 
                 System.out.println("Ja (1)");
                 System.out.println("Ne (2)");
-                System.out.print("Atbilde: ");
-                userAnswer = answer.nextLine();
+                userAnswer = safeReadLine("Atbilde: ", answer);
                 if(userAnswer.equals("1")){
             app.clear();
             app.exit();
-        }
-        if(userAnswer.equals("2")) {
+        } else if(userAnswer.equals("2")) {
             System.out.println("Programma nav izslegta!");
             app.clear();
             RegisteredUserUi();
+        } else {
+            ConsoleColors.println("[Nederiga izvele!]", ConsoleColors.RED);
         }
              }
+        if (!userAnswer.equals("1") && !userAnswer.equals("2") && !userAnswer.equals("3") && !userAnswer.equals("4") && !userAnswer.equals("5") && !userAnswer.equals("")) {
+            ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1-5 vai spiediet ENTER, lai izietu.]", ConsoleColors.RED);
+        }
         if (userAnswer.equals("")) {
             app.exit();
                 } 

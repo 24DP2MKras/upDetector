@@ -10,10 +10,22 @@ public class App {
         //remember to enjoy using java and like java!!
     }
     appFunkcijas app = new appFunkcijas();
+
+    private String safeReadLine(String prompt, Scanner scanner) {
+        try {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        } catch (Exception e) {
+            ConsoleColors.println("[Ievades kluda: " + e.getMessage() + "]", ConsoleColors.RED);
+            return "";
+        }
+    }
+
     public void App(){
         app.clear();
         Scanner answer = new Scanner(System.in);
         while(true) {
+            try {
         System.out.println("                         -Programma upDetector-      ");
         System.out.println(" _______________________________________________________________________");
         System.out.println("|Izvelne|                                                               |");
@@ -24,8 +36,7 @@ public class App {
         System.out.println("| Krasu shema (3)                                                       |");
         System.out.println("| Izslegt programmu (4)                                                 |");
         System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-        System.out.print("|Atbilde:");
-        String userAnswer = answer.nextLine();
+        String userAnswer = safeReadLine("|Atbilde: ", answer);
         if(userAnswer.equals("1")) {
             //Te jabut Registracijai redirekcija
             app.clear();
@@ -33,6 +44,7 @@ public class App {
             Lietotajs newUser = register.registracija();
             if(newUser != null) {
                 register.add(newUser);
+                ConsoleColors.println("[Registrācija veiksmīga!]", ConsoleColors.GREEN);
             }
             App();
             
@@ -51,22 +63,22 @@ public class App {
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
             System.out.println("Atpakal (4)");
-            System.out.print("Atbilde: ");
-                userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("Atbilde: ", answer);
             if(userAnswer.equals("1")){
                 colors = 1;
-                System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+                ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                 app.clear();
                 App();
             }
             if(userAnswer.equals("2")) {
                 colors = 0;
-                System.out.println("[Komanda izpildita]");
+                ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                 app.clear();
                 App();
-            }
-            if(userAnswer.equals("4")){
+            } else if(userAnswer.equals("4")){
                 break;
+            } else {
+                ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1, 2 vai 4.]", ConsoleColors.RED);
             }
              //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
         }
@@ -75,21 +87,28 @@ public class App {
             System.out.println("Vai tiesam velaties izslegt programmu? ");
             System.out.println("Ja (1)");
             System.out.println("Ne (2)");
-            System.out.print("Atbilde: ");
-            userAnswer = answer.nextLine();
+            userAnswer = safeReadLine("Atbilde: ", answer);
             if(userAnswer.equals("1")){
                 app.clear();
                 app.exit();
-            }
-            if(userAnswer.equals("2")) {
+            } else if(userAnswer.equals("2")) {
                 System.out.println("Programma nav izslegta!");
                 app.clear();
                 App();
+            } else {
+                ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1 vai 2.]", ConsoleColors.RED);
             }
+        }
+        if (!userAnswer.equals("1") && !userAnswer.equals("2") && !userAnswer.equals("3") && !userAnswer.equals("4") && !userAnswer.equals("")) {
+            ConsoleColors.println("[Nederiga izvele! Lūdzu izvēlieties 1-4 vai spiediet ENTER, lai izietu.]", ConsoleColors.RED);
         }
         if (userAnswer.equals("")) {
             app.clear();
             break;
+        }
+            } catch (Exception e) {
+                ConsoleColors.println("[Neparasta kluda: " + e.getMessage() + "]", ConsoleColors.RED);
+                break;
             }
         }
         

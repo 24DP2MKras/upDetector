@@ -48,7 +48,7 @@ public class RegisteredUserFunkcijas {
             ieraksts.add(result);
 
         } catch (Exception e) {
-            System.out.println("\u001B[31mKluda: majaslapa nav sasniedzama! (" + e.getMessage() + ")\u001B[0m");
+            ConsoleColors.println("Kluda: majaslapa nav sasniedzama! (" + e.getMessage() + ")", ConsoleColors.RED);
         }
     }
 
