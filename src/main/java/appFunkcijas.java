@@ -23,7 +23,7 @@ public class appFunkcijas {
     }
 
     // Method to read password securely (hidden input)
-    private String readPassword(String prompt) {
+    public String readPassword(String prompt) {
         Console console = System.console();
         if (console != null) {
             char[] passwordChars = console.readPassword(prompt);
@@ -113,6 +113,7 @@ public class appFunkcijas {
         System.out.println("    Tu esi pierakstisanas sadala!   ");
         while(true) {
             try {
+                System.out.println();
                 String SegvardaLauks = safeReadLine("Ievadiet sava konta Segvardu vai spiediet ENTER lai atgrieztos uz izvelni: ");
                 if(SegvardaLauks.isEmpty()) break;
                 if(CsvFileHandler.checkUserExists(SegvardaLauks)) {
