@@ -103,10 +103,11 @@ public class RegisteredUserUi {
         Scanner answer = new Scanner(System.in);
         if (currentSegvards.equals("unknown")) {
             String segvards = safeReadLine("Ievadiet segvardu: ", answer);
-            String parole = safeReadLine("Ievadiet paroli: ", answer);
+            String parole = app.readPassword("Ievadiet paroli: ");
             if (CsvFileHandler.checkUserLogin(segvards, parole)) {
                 this.currentSegvards = segvards;
                 this.parole = parole;
+                app.clear();
                 ConsoleColors.println("[Pieslegties veiksmigi!]", ConsoleColors.GREEN);
             } else {
                 ConsoleColors.println("[Nepareizs segvards vai parole!]", ConsoleColors.RED);
