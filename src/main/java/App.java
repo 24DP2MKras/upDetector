@@ -1,113 +1,126 @@
 import java.io.File;
 import java.util.Scanner;
+
 public class App {
-    public static int colors; // 1 ir krāsas, 0 nav krāsu
-    public String todo() {
-        return "This method must mean theres something to do";
-        //make a main menu screen for the user
-        //make it so the option the user makes redirect them to somewhere (not implemented yet)
-        //make it all correctly row by row so the output of main menu isnt scrambled
-        //remember to enjoy using java and like java!!
-    }
+    public static int colors;
     appFunkcijas app = new appFunkcijas();
-    public void App(){
+
+    private String safeReadLine(String prompt, Scanner scanner) {
+        try {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        } catch (Exception e) {
+            ConsoleColors.println("[Ievades kluda: " + e.getMessage() + "]", ConsoleColors.RED);
+            return "";
+        }
+    }
+
+    public void App() {
         app.clear();
         Scanner answer = new Scanner(System.in);
-        while(true) {
-        System.out.println("                         -Programma upDetector-      ");
-        System.out.println(" _______________________________________________________________________");
-        System.out.println("|Izvelne|                                                               |");
-        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-        System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)|");
-        System.out.println("| Registresanas (1)                                                     |");
-        System.out.println("| Pierakstisanas (2)                                                    |");
-        System.out.println("| Krasu shema (3)                                                       |");
-        System.out.println("| Izslegt programmu (4)                                                 |");
-        System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-        System.out.print("|Atbilde: ");
-        String userAnswer = answer.nextLine();
-        if(userAnswer.equals("1")) {
-            //Te jabut Registracijai redirekcija
-            app.clear();
-            appFunkcijas register = new appFunkcijas();
-            Lietotajs newUser = register.registracija();
-            if(newUser != null) {
-                register.add(newUser);
-            }
-            App();
-            
-            
-        }
-        if(userAnswer.equals("2")) {
-            //Te jabut Pierakstisanas redirekcija
-            app.clear();
-            appFunkcijas login = new appFunkcijas();
-            login.pierakstisanas();
-            App();
-        }
-        if(userAnswer.equals("3")) {
-            app.clear();
-            System.out.println("       -Programma upDetector-  ");
-            System.out.println(" __________________________________");
-            System.out.println("|    Vai velies tekstu ar krasam?  |");
-            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.println("| Ja (1)                           |");
-            System.out.println("| Ne (2)                           |");
-            System.out.println("| Atpakal (3)                      |");
-            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.print("|Atbilde: ");
-                userAnswer = answer.nextLine();
-            System.out.println("____________________________________");
-            if(userAnswer.equals("1")){
-                colors = 1;
-                System.out.println("\u001B[32m[Komanda izpildita]\u001B[0m");
+        while (true) {
+            System.out.println("                         -Programma upDetector-      ");
+            System.out.println(" _______________________________________________________________________");
+            System.out.println("|Izvelne|                                                               |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            System.out.println("|Sveicinati, ko velaties sodien darit? (Spied ENTER lai beigtu darbibas)|");
+            System.out.println("| Registresanas (1)                                                     |");
+            System.out.println("| Pierakstisanas (2)                                                    |");
+            System.out.println("| Krasu shema (3)                                                       |");
+            System.out.println("| Izslegt programmu (4)                                                 |");
+            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+            String userAnswer = safeReadLine("|Atbilde: ", answer);
+
+            if (userAnswer.equals("")) {
                 app.clear();
-                App();
-            }
-            if(userAnswer.equals("2")) {
-                colors = 0;
-                System.out.println("[Komanda izpildita]");
-                app.clear();
-                App();
-            }
-            if(userAnswer.equals("4")){
                 break;
-            }
-             //vajag lai kods turpina darboties nevis beidzas un no jauna sakas
-        }
-        if (userAnswer.equals("4")) {
-            //opcija iet uz sakumu jabut seit
-             System.out.println("       -Programma upDetector-  ");
-            System.out.println(" ___________________________________4");
-            System.out.println("|    Vai velies izslegt programmu?  |");
-            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.println("| Ja (1)                            |");
-            System.out.println("| Ne (2)                            |");
-            System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
-            System.out.print("|Atbilde: ");
-                userAnswer = answer.nextLine();
-            System.out.println("____________________________________");
-            if(userAnswer.equals("1")){
+
+            } else if (userAnswer.equals("1")) {
                 app.clear();
-                app.exit();
-            }
-            if(userAnswer.equals("2")) {
-                System.out.println("Programma nav izslegta!");
+                appFunkcijas register = new appFunkcijas();
+                Lietotajs newUser = register.registracija();
+                if (newUser != null) {
+                    register.add(newUser);
+                    ConsoleColors.println("[Registracija veiksmiga!]", ConsoleColors.GREEN);
+                }
+
+            } else if (userAnswer.equals("2")) {
                 app.clear();
-                App();
+                appFunkcijas login = new appFunkcijas();
+                login.pierakstisanas();
+
+            } else if (userAnswer.equals("3")) {
+                app.clear();
+                while (true) {
+                    System.out.println("       -Programma upDetector-  ");
+                    System.out.println(" __________________________________");
+                    System.out.println("|    Vai velies tekstu ar krasam?  |");
+                    System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+                    System.out.println("| Ja (1)                           |");
+                    System.out.println("| Ne (2)                           |");
+                    System.out.println("| Atpakal (3)                      |");
+                    System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+                    String colorAnswer = safeReadLine("|Atbilde: ", answer);
+                    System.out.println("____________________________________");
+                    if (colorAnswer.equals("1")) {
+                        colors = 1;
+                        app.clear();
+                        ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
+                        System.out.println();
+                        break;
+                    } else if (colorAnswer.equals("2")) {
+                        colors = 0;
+                        app.clear();
+                        ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
+                        System.out.println();
+                        break;
+                    } else if (colorAnswer.equals("3")) {
+                        app.clear();
+                        break;
+                    } else {
+                        app.clear();
+                        ConsoleColors.println("[Kluda: Nederiga izvele! Vajadzeja izvelieties 1, 2 vai 3.]", ConsoleColors.RED);
+                        System.out.println();
+                    }
+                }
+
+            } else if (userAnswer.equals("4")) {
+                app.clear();
+                while (true) {
+                    System.out.println("       -Programma upDetector-  ");
+                    System.out.println(" ___________________________________");
+                    System.out.println("|    Vai velies izslegt programmu?  |");
+                    System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+                    System.out.println("| Ja (1)                            |");
+                    System.out.println("| Ne (2)                            |");
+                    System.out.println("|~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~|");
+                    String exitAnswer = safeReadLine("|Atbilde: ", answer);
+                    System.out.println("____________________________________");
+                    if (exitAnswer.equals("1")) {
+                        app.clear();
+                        app.exit();
+                        return;
+                    } else if (exitAnswer.equals("2")) {
+                        ConsoleColors.println("[Programma nav izslegta!]", ConsoleColors.YELLOW);
+                        app.clear();
+                        break;
+                    } else {
+                        app.clear();
+                        ConsoleColors.println("[Kluda: Nederiga izvele! Vajadzeja izvelieties 1 vai 2.]", ConsoleColors.RED);
+                        System.out.println();
+                    }
+                }
+
+            } else {
+                app.clear();
+                ConsoleColors.println("[Nederiga izvele! Ludzu izvelieties 1-4 vai spiediet ENTER, lai izietu.]", ConsoleColors.RED);
+                System.out.println();
             }
         }
-        if (userAnswer.equals("")) {
-            app.clear();
-            break;
-            }
-        }
-        
     }
-    
+
     public static void main(String[] args) {
         CsvFileHandler.ensureDataFolder();
-        System.out.println(CsvFileHandler.ensureDataFolder().getAbsolutePath());
         File folder = CsvFileHandler.ensureDataFolder();
         System.out.println("Data folder path: " + folder.getAbsolutePath());
         System.out.println("Exists: " + folder.exists());
