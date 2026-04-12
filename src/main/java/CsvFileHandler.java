@@ -7,31 +7,36 @@ import java.util.Scanner;
 
 public class CsvFileHandler {
 
-  public static File ensureDataFolder() {
-    File dir = new File(System.getProperty("user.dir"));
-    // Search upward for the project root (has the marker file)
-    for (int i = 0; i < 10; i++) {
-        File marker = new File(dir, "upDetector.marker");
-        if (marker.exists()) {
-            File dataFolder = new File(dir, "data");
-            if (!dataFolder.exists()) {
-                if (dataFolder.mkdirs()) {
-                    System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
-                } else {
-                    System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
+    // funkcija ensureDataFolder pieņem nav parametru un atgriež File tipa vērtību rezultatu
+    // Atrod projekta saknes mapi pēc "upDetector.marker" faila un atgriež "data" apakšmapi.
+    // Ja mape neeksistē, izveido to. Ja projekta sakne netiek atrasta, atgriež "data" mapi no pašreizējā direktorija.
+    public static File ensureDataFolder() {
+        File dir = new File(System.getProperty("user.dir"));
+        // Meklē augšup pa direktoriju koku līdz 10 līmeņiem, lai atrastu projekta sakni pēc marker faila.
+        for (int i = 0; i < 10; i++) {
+            File marker = new File(dir, "upDetector.marker");
+            if (marker.exists()) {
+                File dataFolder = new File(dir, "data");
+                if (!dataFolder.exists()) {
+                    // Ja data mape neeksistē, mēģina to izveidot un paziņo par rezultātu.
+                    if (dataFolder.mkdirs()) {
+                        System.out.println("[Data mape izveidota: " + dataFolder.getAbsolutePath() + "]");
+                    } else {
+                        System.out.println("[Neizdevas izveidot data mapi: " + dataFolder.getAbsolutePath() + "]");
+                    }
                 }
+                return dataFolder;
             }
-            return dataFolder;
+            if (dir.getParentFile() != null) {
+                dir = dir.getParentFile();
+            } else break;
         }
-        if (dir.getParentFile() != null) {
-            dir = dir.getParentFile();
-        } else break;
+        // Fallback risinājums, ja projekta sakne netiek atrasta 10 līmeņu dziļumā.
+        return new File(System.getProperty("user.dir"), "data");
     }
-    // Fallback
-    return new File(System.getProperty("user.dir"), "data");
-}
 
-    // Save users list to CSV (compatible with appFunkcijas)
+    // funkcija addUsersToCSV pieņem List<Lietotajs> tipa vērtību users un String tipa vērtību fileName un atgriež void tipa vērtību nav
+    // Saglabā lietotāju sarakstu CSV datnē. Ja datne ir jauna, ieraksta galveni ar lauku nosaukumiem.
     public static void addUsersToCSV(List<Lietotajs> users, String fileName) {
         try {
             File dataFolder = ensureDataFolder();
@@ -41,12 +46,14 @@ public class CsvFileHandler {
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
+            // Pārbauda vai datne jau eksistē, lai izlemtu vai jāraksta galvene.
             boolean isNew = !file.exists();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 if (isNew) {
                     writer.write("Vards,Uzvards,Segvards,Epasts,Parole,timestamp");
                     writer.newLine();
                 }
+                // Pieraksta katru lietotāju jaunā rindā CSV datnē.
                 for (Lietotajs u : users) {
                     writer.write(u.toString());
                     writer.newLine();
@@ -59,19 +66,26 @@ public class CsvFileHandler {
         }
     }
 
+    // funkcija addToCSV pieņem List<Lietotajs> tipa vērtību users un atgriež void tipa vērtību nav
+    // Saglabā lietotāju sarakstu noklusētajā "UserData.csv" datnē, izsaucot addUsersToCSV.
     public static void addToCSV(List<Lietotajs> users) {
         addUsersToCSV(users, "UserData.csv");
     }
 
+    // funkcija checkUserExists pieņem String tipa vērtību segvards un atgriež boolean tipa vērtību rezultatu
+    // Pārbauda vai lietotājs ar doto segvardu eksistē noklusētajā "UserData.csv" datnē.
     public static boolean checkUserExists(String segvards) {
         return checkUserExists(segvards, "UserData.csv");
     }
 
+    // funkcija checkUserLogin pieņem String tipa vērtību segvards un String tipa vērtību parole un atgriež boolean tipa vērtību rezultatu
+    // Pārbauda pierakstīšanās datus noklusētajā "UserData.csv" datnē.
     public static boolean checkUserLogin(String segvards, String parole) {
         return checkUserLogin(segvards, parole, "UserData.csv");
     }
 
-    // Simple method to add a line to any CSV file
+    // funkcija saveLine pieņem String tipa vērtību fileName un String tipa vērtību data un String tipa vērtību header un atgriež void tipa vērtību nav
+    // Pievieno vienu rindu CSV datnei. Ja datne ir jauna un header nav tukšs, vispirms ieraksta galvenes rindu.
     public static void saveLine(String fileName, String data, String header) {
         try {
             File dataFolder = ensureDataFolder();
@@ -81,6 +95,7 @@ public class CsvFileHandler {
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
             File file = new File(filePath);
+            // Ja datne ir jauna un galvene nav tukša, ieraksta galvenes rindu pirms datiem.
             boolean isNew = !file.exists();
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
                 if (isNew && header != null && !header.isEmpty()) {
@@ -96,11 +111,15 @@ public class CsvFileHandler {
         }
     }
 
+    // funkcija saveLine pieņem String tipa vērtību fileName un String tipa vērtību data un atgriež void tipa vērtību nav
+    // Pievieno rindu CSV datnei bez galvenes (pārslogo saveLine ar trīs parametriem).
     public static void saveLine(String fileName, String data) {
         saveLine(fileName, data, null);
     }
 
-    // Remove record from CSV file by identifier (any field index)
+    // funkcija removeFromCSV pieņem String tipa vērtību fileName un String tipa vērtību identifier un int tipa vērtību fieldIndex un atgriež void tipa vērtību nav
+    // Noņem ierakstu no CSV datnes pēc identifikatora norādītajā lauka indeksā.
+    // Izmanto pagaidu datni, lai droši pārrakstītu saturu bez dzēstā ieraksta.
     public static void removeFromCSV(String fileName, String identifier, int fieldIndex) {
         try {
             File dataFolder = ensureDataFolder();
@@ -109,10 +128,12 @@ public class CsvFileHandler {
                 return;
             }
             String filePath = new File(dataFolder, fileName).getAbsolutePath();
+            // Izveido pagaidu datnes ceļu, aizstājot ".csv" ar "_temp.csv".
             String tempFile = filePath.replace(".csv", "_temp.csv");
             try (BufferedReader br = new BufferedReader(new FileReader(filePath));
                  PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(tempFile)))) {
                 String line;
+                // Nolasījums ar lauku salīdzinājumu: katru rindu, kas neatbilst identifikatoram, pieraksta atpakaļ.
                 while ((line = br.readLine()) != null) {
                     String[] row = line.split(",");
                     if (row.length > fieldIndex && !row[fieldIndex].trim().equals(identifier.trim())) {
@@ -125,6 +146,7 @@ public class CsvFileHandler {
                 return;
             }
 
+            // Pārkopē pagaidu datni atpakaļ uz oriģinālo datni un dzēš pagaidu datni.
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(tempFile));
                 FileWriter writer = new FileWriter(filePath);
@@ -144,7 +166,9 @@ public class CsvFileHandler {
         }
     }
 
-    // Edit record in CSV file by identifier
+    // funkcija editRecord pieņem String tipa vērtību fileName un String tipa vērtību identifier un int tipa vērtību fieldIndex un String[] tipa vērtību fieldNames un atgriež void tipa vērtību nav
+    // Rediģē ierakstu CSV datnē pēc identifikatora. Atrod rindu ar norādīto identifikatoru,
+    // parāda lauku sarakstu, ļauj izvēlēties un ievadīt jaunu vērtību, tad pārraksta datni.
     public static void editRecord(String fileName, String identifier, int fieldIndex, String[] fieldNames) {
         try {
             File dataFolder = ensureDataFolder();
@@ -161,14 +185,14 @@ public class CsvFileHandler {
                 Scanner input = new Scanner(System.in);
                 String line;
                 boolean recordFound = false;
-
+                // Lasīšana un pārrakstīšana pa rindu: katra saglabātā rinda tiek pārbaudīta un, ja nepieciešams, mainīta.
                 while ((line = br.readLine()) != null) {
                     String[] row = line.split(",");
                     if (row.length > fieldIndex && row[fieldIndex].trim().equals(identifier.trim())) {
                         recordFound = true;
-
                         ConsoleColors.println("Ieraksts atrasts!", ConsoleColors.YELLOW);
 
+                        // Izvada numurētu lauku sarakstu, lai lietotājs varētu izvēlēties kuru rediģēt.
                         for (int i = 0; i < fieldNames.length && i < row.length; i++) {
                             System.out.println((i + 1) + " - " + fieldNames[i]);
                         }
@@ -181,17 +205,18 @@ public class CsvFileHandler {
                             ConsoleColors.println("[Nepareiza izvele!]", ConsoleColors.RED);
                         }
 
+                        // Pārbauda vai izvēlētais skaitlis ir derīgs lauka indekss.
                         if (choice >= 1 && choice <= fieldNames.length && choice <= row.length) {
                             int fieldToEdit = choice - 1;
                             System.out.print("Ievadiet jauno vertibu: ");
                             String newValue = input.nextLine();
                             row[fieldToEdit] = newValue;
-
                             ConsoleColors.println("[Vertiba atjaunota!]", ConsoleColors.GREEN);
                         } else {
                             ConsoleColors.println("[Nepareiza izvele!]", ConsoleColors.RED);
                         }
 
+                        // Saliek atjaunoto rindu atpakaļ, savienojot laukus ar komatu.
                         StringBuilder updatedLine = new StringBuilder();
                         for (int i = 0; i < row.length; i++) {
                             if (i > 0) updatedLine.append(",");
@@ -215,6 +240,7 @@ public class CsvFileHandler {
                 return;
             }
 
+            // Pārkopē pagaidu datni atpakaļ uz oriģinālo un dzēš pagaidu datni.
             try {
                 BufferedReader reader = new BufferedReader(new FileReader(tempFile));
                 FileWriter writer = new FileWriter(filePath);
@@ -234,7 +260,8 @@ public class CsvFileHandler {
         }
     }
 
-    // Read all records from CSV file
+    // funkcija readCSV pieņem String tipa vērtību fileName un atgriež void tipa vērtību nav
+    // Nolasa un izvada visas rindiņas no norādītās CSV datnes konsolē.
     public static void readCSV(String fileName) {
         try {
             File dataFolder = ensureDataFolder();
@@ -255,7 +282,9 @@ public class CsvFileHandler {
         }
     }
 
-    // Check if a user exists by segvards
+    // funkcija checkUserExists pieņem String tipa vērtību segvards un String tipa vērtību fileName un atgriež boolean tipa vērtību rezultatu
+    // Pārbauda, vai lietotājs ar norādīto segvardu eksistē konkrētajā CSV datnē.
+    // Izlaiž pirmo (galvenes) rindu un salīdzina segvardu ar trešo lauku (indekss 2) katrā rindā.
     public static boolean checkUserExists(String segvards, String fileName) {
         try {
             File dataFolder = ensureDataFolder();
@@ -270,11 +299,13 @@ public class CsvFileHandler {
                 String line;
                 boolean firstLine = true;
                 while ((line = br.readLine()) != null) {
+                    // Izlaiž galvenes rindu, lai nesalīdzinātu ar lauku nosaukumiem.
                     if (firstLine) {
                         firstLine = false;
                         continue;
                     }
                     String[] parts = line.split(",");
+                    // Segvards atrodas 3. kolonnā (indekss 2), salīdzina bez ievades atstarpes.
                     if (parts.length >= 3 && parts[2].trim().equals(segvards.trim())) {
                         return true;
                     }
@@ -286,7 +317,8 @@ public class CsvFileHandler {
         return false;
     }
 
-    // List all CSV files in the data folder
+    // funkcija listCsvFiles pieņem nav parametru un atgriež void tipa vērtību nav
+    // Izvada visu CSV datņu nosaukumus, kas atrodas datu mapē.
     public static void listCsvFiles() {
         try {
             File dataFolder = ensureDataFolder();
@@ -294,6 +326,7 @@ public class CsvFileHandler {
                 ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
                 return;
             }
+            // Filtrē tikai ".csv" datnes no datu mapes satura.
             File[] files = dataFolder.listFiles((dir, name) -> name.endsWith(".csv"));
             if (files != null && files.length > 0) {
                 System.out.println("CSV faili data mapē:");
@@ -308,7 +341,9 @@ public class CsvFileHandler {
         }
     }
 
-    // Check if user login is valid (segvards and parole match)
+    // funkcija checkUserLogin pieņem String tipa vērtību segvards un String tipa vērtību parole un String tipa vērtību fileName un atgriež boolean tipa vērtību rezultatu
+    // Pārbauda, vai pieslēgšanās dati (segvards un parole) atbilst ierakstam konkrētajā CSV datnē.
+    // Salīdzina segvardu ar 3. kolonnu (indekss 2) un paroli ar 5. kolonnu (indekss 4).
     public static boolean checkUserLogin(String segvards, String parole, String fileName) {
         try {
             File dataFolder = ensureDataFolder();
@@ -323,11 +358,13 @@ public class CsvFileHandler {
                 String line;
                 boolean firstLine = true;
                 while ((line = br.readLine()) != null) {
+                    // Izlaiž galvenes rindu.
                     if (firstLine) {
                         firstLine = false;
                         continue;
                     }
                     String[] parts = line.split(",");
+                    // Pārbauda vai segvards (2. indekss) un parole (4. indekss) sakrīt ar ievadītajiem datiem.
                     if (parts.length >= 5 && parts[2].trim().equals(segvards.trim()) && parts[4].trim().equals(parole.trim())) {
                         return true;
                     }
@@ -339,7 +376,9 @@ public class CsvFileHandler {
         return false;
     }
 
-    // Load all users from UserData.csv
+    // funkcija loadUsers pieņem nav parametru un atgriež List<Map<String, String>> tipa vērtību rezultatu
+    // Nolasa visus lietotājus no "UserData.csv" un atgriež tos kā sarakstu ar Map objektiem,
+    // kur katrs Map satur lauku nosaukumu-vērtību pārus (Vards, Uzvards, Segvards, Epasts, Parole).
     public static List<Map<String, String>> loadUsers() {
         List<Map<String, String>> users = new ArrayList<>();
         try {
@@ -350,9 +389,10 @@ public class CsvFileHandler {
             File file = new File(dataFolder, "UserData.csv");
             if (!file.exists()) return users;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine(); // Skip header
+                String line = br.readLine(); // Izlaiž galveni
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
+                    // Katrā rindā izveido Map ar lauku nosaukumiem kā atslēgām.
                     if (parts.length >= 5) {
                         Map<String, String> user = new HashMap<>();
                         user.put("Vards", parts[0]);
@@ -370,7 +410,9 @@ public class CsvFileHandler {
         return users;
     }
 
-    // Load all websites from Vietnes.csv
+    // funkcija loadWebsites pieņem nav parametru un atgriež List<Map<String, String>> tipa vērtību rezultatu
+    // Nolasa visus vietņu ierakstus no "Vietnes.csv" un atgriež tos kā sarakstu ar Map objektiem,
+    // kur katrs Map satur: Segvards, URL, Ping (ms), Datums/Laiks.
     public static List<Map<String, String>> loadWebsites() {
         List<Map<String, String>> websites = new ArrayList<>();
         try {
@@ -381,7 +423,7 @@ public class CsvFileHandler {
             File file = new File(dataFolder, "Vietnes.csv");
             if (!file.exists()) return websites;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine(); // Skip header
+                String line = br.readLine(); // Izlaiž galveni
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
                     if (parts.length >= 4) {
@@ -400,7 +442,9 @@ public class CsvFileHandler {
         return websites;
     }
 
-    // Load all favorites from MilakasVietnes.csv
+    // funkcija loadFavorites pieņem nav parametru un atgriež List<Map<String, String>> tipa vērtību rezultatu
+    // Nolasa visus favorītu ierakstus no "MilakasVietnes.csv" un atgriež tos kā sarakstu ar Map objektiem,
+    // kur katrs Map satur: Segvards un VietnesNosaukums.
     public static List<Map<String, String>> loadFavorites() {
         List<Map<String, String>> favorites = new ArrayList<>();
         try {
@@ -411,7 +455,7 @@ public class CsvFileHandler {
             File file = new File(dataFolder, "MilakasVietnes.csv");
             if (!file.exists()) return favorites;
             try (BufferedReader br = new BufferedReader(new FileReader(file))) {
-                String line = br.readLine(); // Skip header
+                String line = br.readLine(); // Izlaiž galveni
                 while ((line = br.readLine()) != null) {
                     String[] parts = line.split(",");
                     if (parts.length >= 2) {
@@ -428,10 +472,12 @@ public class CsvFileHandler {
         return favorites;
     }
 
-    // Get all websites for a specific user
+    // funkcija getUserWebsites pieņem String tipa vērtību segvards un atgriež List<Map<String, String>> tipa vērtību rezultatu
+    // Atgriež visus vietņu ierakstus no "Vietnes.csv", kas pieder konkrētajam lietotājam pēc segvarda.
     public static List<Map<String, String>> getUserWebsites(String segvards) {
         List<Map<String, String>> userWebsites = new ArrayList<>();
         List<Map<String, String>> allWebsites = loadWebsites();
+        // Filtrē vietnes, salīdzinot segvardu ar katras vietnes ieraksta segvarda lauku.
         for (Map<String, String> website : allWebsites) {
             if (segvards.equals(website.get("Segvards"))) {
                 userWebsites.add(website);
@@ -439,10 +485,13 @@ public class CsvFileHandler {
         }
         return userWebsites;
     }
-// Get favorite websites for a specific user
+
+    // funkcija getUserFavorites pieņem String tipa vērtību segvards un atgriež List<String> tipa vērtību rezultatu
+    // Atgriež URL sarakstu ar lietotāja favorītajām vietnēm no "MilakasVietnes.csv" pēc segvarda.
     public static List<String> getUserFavorites(String segvards) {
         List<String> favorites = new ArrayList<>();
         List<Map<String, String>> allFavorites = loadFavorites();
+        // Filtrē favorītus pēc segvarda un izveido sarakstu tikai ar vietņu nosaukumiem.
         for (Map<String, String> fav : allFavorites) {
             if (segvards.equals(fav.get("Segvards"))) {
                 favorites.add(fav.get("VietnesNosaukums"));
@@ -451,7 +500,9 @@ public class CsvFileHandler {
         return favorites;
     }
 
-    // Get combined data: users with their websites and favorites
+    // funkcija getAllData pieņem nav parametru un atgriež Map<String, Map<String, Object>> tipa vērtību rezultatu
+    // Apvieno datus no visām trim CSV datnēm (lietotāji, vietnes, favorīti) vienā struktūrā.
+    // Atgriež Map, kur atslēga ir segvards, bet vērtība ir Map ar "user", "websites" un "favorites" atslēgām.
     public static Map<String, Map<String, Object>> getAllData() {
         Map<String, Map<String, Object>> allData = new HashMap<>();
 
@@ -459,6 +510,7 @@ public class CsvFileHandler {
         List<Map<String, String>> websites = loadWebsites();
         List<Map<String, String>> favorites = loadFavorites();
 
+        // Vispirms izveido ierakstu katram lietotājam ar tukšiem vietnu un favorītu sarakstiem.
         for (Map<String, String> user : users) {
             String segvards = user.get("Segvards");
             Map<String, Object> userData = new HashMap<>();
@@ -468,6 +520,7 @@ public class CsvFileHandler {
             allData.put(segvards, userData);
         }
 
+        // Pievieno katras vietnes ierakstu pie atbilstošā lietotāja pēc segvarda.
         for (Map<String, String> website : websites) {
             String segvards = website.get("Segvards");
             if (allData.containsKey(segvards)) {
@@ -477,6 +530,7 @@ public class CsvFileHandler {
             }
         }
 
+        // Pievieno katru favorītu pie atbilstošā lietotāja pēc segvarda.
         for (Map<String, String> fav : favorites) {
             String segvards = fav.get("Segvards");
             if (allData.containsKey(segvards)) {

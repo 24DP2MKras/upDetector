@@ -15,13 +15,17 @@ public class RegisteredUserUi {
     RegisteredUserFunkcijas pingTests = new RegisteredUserFunkcijas();
     private String parole;
     private String currentSegvards;
+    // Regulārā izteiksme derīga URL formāta pārbaudei.
     public String regex = "^(https?://)?([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}(/.*)?$";
+    // Regulārās izteiksmes konta lauku validācijai.
     private static final String NAME_REGEX = "^[A-Za-z\\u00C4-\\u017E]{3,50}$";
     private static final String SURNAME_REGEX = "^[A-Za-z\\u00C4-\\u017E]{4,60}$";
     private static final String USERNAME_REGEX = "^(?![!@#$]+$)[A-Za-z0-9!@#$]{4,20}$";
     private static final String EMAIL_REGEX = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
     private static final String PASSWORD_REGEX = "^(?=.*\\d)[A-Za-z\\d-/.!@#$]{8,20}$";
 
+    // funkcija safeReadLine pieņem String tipa vērtību prompt un Scanner tipa vērtību scanner un atgriež String tipa vērtību rezultatu
+    // Droši nolasa rindu no skenera ar kļūdu apstrādi. Atgriež ievadīto tekstu vai tukšu virkni kļūdas gadījumā.
     private String safeReadLine(String prompt, Scanner scanner) {
         try {
             System.out.print(prompt);
@@ -32,6 +36,9 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija updateUserField pieņem int tipa vērtību fieldIndex un String tipa vērtību newValue un atgriež void tipa vērtību nav
+    // Atjaunina konkrētu lauku (pēc kolonnas indeksa) pašreizējā lietotāja rindā "UserData.csv".
+    // Nolasa visu datni, atrod lietotāja rindu pēc segvarda, nomaina lauku un pārraksta datni.
     private void updateUserField(int fieldIndex, String newValue) {
         if (currentSegvards == null || currentSegvards.isBlank()) {
             System.out.println("Segvards nav iestatits.");
@@ -48,6 +55,7 @@ public class RegisteredUserUi {
         List<String> lines = new ArrayList<>();
         boolean updated = false;
 
+        // Nolasa visas rindiņas, meklē lietotāja rindu pēc segvarda (3. kolonna) un nomaina norādīto lauku.
         try (BufferedReader br = new BufferedReader(new FileReader(file))) {
             String line;
             boolean firstLine = true;
@@ -63,6 +71,7 @@ public class RegisteredUserUi {
                         row[fieldIndex] = newValue;
                         updated = true;
                     }
+                    // Saliek rindas laukus atpakaļ ar komatu kā atdalītāju.
                     lines.add(String.join(",", row));
                 } else {
                     lines.add(line);
@@ -78,6 +87,7 @@ public class RegisteredUserUi {
             return;
         }
 
+        // Pārraksta datni ar atjauninātajām rindām.
         try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
             for (String outputLine : lines) {
                 bw.write(outputLine);
@@ -89,18 +99,26 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija RegisteredUserUi pieņem String tipa vērtību username un String tipa vērtību parole un atgriež void tipa vērtību nav
+    // Konstruktors - inicializē reģistrēta lietotāja UI objektu ar zināmu segvardu un paroli.
     public RegisteredUserUi(String username, String parole) {
         this.currentSegvards = username;
         this.parole = parole;
     }
 
+    // funkcija RegisteredUserUi pieņem nav parametru un atgriež void tipa vērtību nav
+    // Noklusētais konstruktors - inicializē objektu ar nezināmu lietotāju (izmanto tiešai palaišanai).
     public RegisteredUserUi() {
         this.currentSegvards = "unknown";
         this.parole = " ";
     }
 
+    // funkcija RegisteredUserUi pieņem nav parametru un atgriež void tipa vērtību nav
+    // Galvenā reģistrēta lietotāja izvēlne. Ja segvards nav zināms, pieprasa pieslēgšanos.
+    // Apstrādā izvēles: vietnes pārbaude, konts, izrakstīšanās, programmas izslēgšana, favorīti.
     public void RegisteredUserUi() {
         Scanner answer = new Scanner(System.in);
+        // Ja lietotājs nav autentificēts (tika izsaukts noklusētais konstruktors), pieprasa pieslēgšanos.
         if (currentSegvards.equals("unknown")) {
             String segvards = safeReadLine("Ievadiet segvardu: ", answer);
             String parole = app.readPassword("Ievadiet paroli: ");
@@ -115,6 +133,7 @@ public class RegisteredUserUi {
             }
         }
 
+        // Galvenā izvēlnes cilpa - turpinās, līdz lietotājs izrakstās vai izslēdz programmu.
         while (true) {
             System.out.println(" ________________________________________________________________________ ");
             System.out.println("|                        -Programma upDetector-                          |");
@@ -132,34 +151,29 @@ public class RegisteredUserUi {
 
             if (userAnswer.equals("")) {
                 app.clear();
+                // ENTER taustiņš arī aktivizē izrakstīšanās apstiprinājumu.
                 if (handleLogout(answer)) {
                     return;
                 }
-
             } else if (userAnswer.equals("1")) {
                 app.clear();
                 handleWebsiteCheck(answer);
-
             } else if (userAnswer.equals("2")) {
                 app.clear();
                 handleAccountMenu(answer);
-
             } else if (userAnswer.equals("3")) {
                 app.clear();
                 if (handleLogout(answer)) {
                     return;
                 }
-
             } else if (userAnswer.equals("4")) {
                 app.clear();
                 if (handleProgramExit(answer)) {
                     return;
                 }
-
             } else if (userAnswer.equals("5")) {
                 app.clear();
                 handleFavorites(answer);
-
             } else {
                 app.clear();
                 System.out.println();
@@ -169,6 +183,9 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija handleWebsiteCheck pieņem Scanner tipa vērtību answer un atgriež void tipa vērtību nav
+    // Apstrādā vietnes pārbaudes sadaļu: pieprasa URL, validē to, veic ping pārbaudi,
+    // saglabā rezultātu un piedāvā pievienot vietni favorītiem.
     private void handleWebsiteCheck(Scanner answer) {
         System.out.println("Esat vietnes parbaudes sadala!");
         System.out.println("Ievadiet vietni, kuru gribat ierakstit un saglabat");
@@ -183,6 +200,7 @@ public class RegisteredUserUi {
                 return;
             }
 
+            // Validē URL formātu ar regularo izteiksmi, lai pārliecinātos par derīgu vietnes adresi.
             if (!websiteInput.matches(regex)) {
                 app.clear();
                 ConsoleColors.println("[Kluda: Nederigs vietnes URL! Ludzu ievadiet URL formatu https://... ]", ConsoleColors.RED);
@@ -192,18 +210,20 @@ public class RegisteredUserUi {
                 continue;
             }
 
+            // Veic HTTP ping pārbaudi un saglabā rezultātu CSV datnē.
             pingTests.httpPinger(websiteInput, currentSegvards);
             HttpPing ieraksts = pingTests.pedejoReiziSkatits();
             System.out.println(ieraksts);
             System.out.println();
 
-            // Ask about favourites ? loop until valid answer
+            // Šī iekšējā cilpa pieprasa, vai lietotājs vēlas saglabāt vietni savos favorītos.
             while (true) {
                 System.out.println("Vai gribat pievienot so vietni milakajam vietnem?");
                 System.out.println("Ja (1)");
                 System.out.println("Ne (2)");
                 String favoriteAnswer = safeReadLine("Atbilde: ", answer);
                 if (favoriteAnswer.equals("1")) {
+                    // Saglabā vietni favorītu CSV datnē.
                     pingTests.pedejoReiziSkatits1();
                     ConsoleColors.println("[Vietne pievienota milakajam vietnem!]", ConsoleColors.GREEN);
                     break;
@@ -221,7 +241,11 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija promptForCurrentCredentials pieņem Scanner tipa vērtību answer un atgriež boolean tipa vērtību rezultatu
+    // Apstiprina lietotāja identitāti, lūdzot ievadīt segvardu un paroli.
+    // Atgriež true, ja dati sakrīt ar pašreizējā lietotāja datiem, pretējā gadījumā false.
     private boolean promptForCurrentCredentials(Scanner answer) {
+        // Atkārtoti pieprasa segvardu un paroli, līdz tie ir pareizi vai lietotājs atceļ ar ENTER.
         while (true) {
             String enteredSegvards = safeReadLine("Ievadiet savu segvardu lai apstiprinatu (ENTER - atpakal): ", answer);
             if (enteredSegvards.isBlank()) {
@@ -235,6 +259,7 @@ public class RegisteredUserUi {
             if (enteredParole.isBlank()) {
                 return false;
             }
+            // Salīdzina ievadīto paroli ar saglabāto, abas tīrot no atstarpes.
             if (this.parole == null || !enteredParole.trim().equals(this.parole.trim())) {
                 ConsoleColors.println("[Nepareiza parole! Ludzu meginiet velreiz vai spiediet ENTER, lai atgrieztos. ]", ConsoleColors.RED);
                 continue;
@@ -243,11 +268,15 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija promptForEditedField pieņem int tipa vērtību fieldIndex un Scanner tipa vērtību answer un atgriež String tipa vērtību rezultatu
+    // Pieprasa no lietotāja jaunu vērtību norādītajam konta laukam un validē to ar atbilstošo regex.
+    // Papildus pārbauda segvarda unikālumu (indekss 2) un paroles atkārtojumu (indekss 4).
     private String promptForEditedField(int fieldIndex, Scanner answer) {
         String prompt;
         String invalidMessage;
         String regexToCheck = null;
 
+        // Katram lauka tipam ir atsevišķs uzvednes teksts, kļūdas ziņojums un validācijas regex.
         switch (fieldIndex) {
             case 0:
                 prompt = "Ievadiet jauno vardu vai spiediet ENTER, lai atgrieztos: ";
@@ -279,6 +308,7 @@ public class RegisteredUserUi {
         }
 
         while (true) {
+            // Cikls pārbauda jauno lauka vērtību, līdz tā atbilst noteiktajai regex validācijai.
             String newValue = safeReadLine(prompt, answer);
             if (newValue.isBlank()) {
                 return "";
@@ -287,12 +317,14 @@ public class RegisteredUserUi {
                 ConsoleColors.println(invalidMessage, ConsoleColors.RED);
                 continue;
             }
+            // Ja rediģē segvardu, pārbauda vai jaunais segvards jau ir aizņemts no cita lietotāja.
             if (fieldIndex == 2) {
                 if (!newValue.trim().equals(this.currentSegvards.trim()) && CsvFileHandler.checkUserExists(newValue.trim())) {
                     ConsoleColors.println("[Segvards jau eksiste, ludzu izvelieties citu segvardu!]", ConsoleColors.RED);
                     continue;
                 }
             }
+            // Ja rediģē paroli, pieprasa atkārtotu ievadi apstiprināšanai.
             if (fieldIndex == 4) {
                 String confirmPassword = safeReadLine("Ievadiet paroli velreiz: ", answer);
                 if (confirmPassword.isBlank()) {
@@ -307,6 +339,9 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija handleAccountMenu pieņem Scanner tipa vērtību answer un atgriež void tipa vērtību nav
+    // Apstrādā konta sadaļas izvēlni - ļauj rediģēt konta laukus vai dzēst kontu,
+    // pirms tam pārbaudot lietotāja akreditācijas datus.
     private void handleAccountMenu(Scanner answer) {
         while (true) {
             System.out.println("Esat sava konta sadala!");
@@ -322,6 +357,7 @@ public class RegisteredUserUi {
             } else if (userAnswer.equals("1")) {
                 app.clear();
                 System.out.println("Esat sava konta redigesanas sadala!");
+                // Pārbauda lietotāja identitāti pirms ļauj veikt izmaiņas.
                 if (!promptForCurrentCredentials(answer)) {
                     app.clear();
                     continue;
@@ -334,6 +370,7 @@ public class RegisteredUserUi {
                         app.clear();
                         break;
                     }
+                    // Pārvērš lietotāja izvēli par CSV kolonnas indeksu (1-based -> 0-based).
                     int fieldIndex = -1;
                     switch (editChoice) {
                         case "1": fieldIndex = 0; break;
@@ -350,6 +387,7 @@ public class RegisteredUserUi {
                         continue;
                     }
                     updateUserField(fieldIndex, newValue);
+                    // Ja mainīts segvards vai parole, atjaunina arī objekta pašreizējos laukus.
                     if (fieldIndex == 2) this.currentSegvards = newValue;
                     if (fieldIndex == 4) this.parole = newValue;
                     ConsoleColors.println("[Izmainas ir saglabatas.]", ConsoleColors.GREEN);
@@ -359,13 +397,14 @@ public class RegisteredUserUi {
             } else if (userAnswer.equals("2")) {
                 app.clear();
                 System.out.println("Esat sava konta dzesanas sadala!");
-
+                // Apstiprinājuma cilpa konta dzēšanai - prasa divkāršu apstiprinājumu (izvēle + parole).
                 while (true) {
                     System.out.println("Vai tiesam velaties dzest savu kontu?");
                     System.out.println("Ja (1)");
                     System.out.println("Ne (2)");
                     String deleteAnswer = safeReadLine("Atbilde: ", answer);
                     if (deleteAnswer.equals("1")) {
+                        // Dzēš lietotāja ierakstu no CSV, izmantojot segvardu kā identifikatoru (kolonna 2).
                         if (promptForCurrentCredentials(answer)) {
                             CsvFileHandler.removeFromCSV("UserData.csv", this.currentSegvards, 2);
                             ConsoleColors.println("[Konts dzests!]", ConsoleColors.GREEN);
@@ -387,6 +426,9 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija handleLogout pieņem Scanner tipa vērtību answer un atgriež boolean tipa vērtību rezultatu
+    // Apstrādā izrakstīšanās apstiprinājumu. Atgriež true, ja lietotājs apstiprina izrakstīšanos,
+    // un false, ja atceļ vai nospiež ENTER. Pie veiksmīgas izrakstīšanās atiestata segvardu un paroli.
     private boolean handleLogout(Scanner answer) {
         while (true) {
             System.out.println("Vai tiesam velaties izrakstities?");
@@ -401,6 +443,7 @@ public class RegisteredUserUi {
 
             } else if (userAnswer.equals("1")) {
                 ConsoleColors.println("[Izrakstisanas veiksmiga!]", ConsoleColors.GREEN);
+                // Atiestata lietotāja datus, lai atzīmētu ka nav pieslēgts neviens konts.
                 currentSegvards = "unknown";
                 this.parole = " ";
                 return true;
@@ -417,6 +460,9 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija handleProgramExit pieņem Scanner tipa vērtību answer un atgriež boolean tipa vērtību rezultatu
+    // Apstrādā programmas aizvēršanas apstiprinājumu no reģistrētā lietotāja izvēlnes.
+    // Atgriež true, ja lietotājs apstiprina izslēgšanu, un false, ja atceļ.
     private boolean handleProgramExit(Scanner answer) {
         while (true) {
             System.out.println("Vai tiesam velaties izslegt programmu?");
@@ -446,11 +492,15 @@ public class RegisteredUserUi {
         }
     }
 
+    // funkcija handleFavorites pieņem Scanner tipa vērtību answer un atgriež void tipa vērtību nav
+    // Nolasa visas lietotāja favorītās vietnes no CSV un veic HTTP ping pārbaudi katrai no tām.
+    // Izvada rezultātus un paziņo, ja nav nevienas favorītās vietnes.
     private void handleFavorites(Scanner answer) {
         ConsoleColors.println("[Esat milako vietnu sadala!]", ConsoleColors.GREEN);
         RegisteredUserFunkcijas pingFave = new RegisteredUserFunkcijas();
         List<Map<String, String>> favorites = CsvFileHandler.loadFavorites();
         boolean found = false;
+        // Pārlasa favorītu sarakstu un veic ping pārbaudi tikai pašreizējā lietotāja vietnēm.
         for (Map<String, String> fav : favorites) {
             if (fav.get("Segvards").equals(currentSegvards)) {
                 found = true;
@@ -470,6 +520,8 @@ public class RegisteredUserUi {
         app.clear();
     }
 
+    // funkcija main pieņem String[] tipa vērtību args un atgriež void tipa vērtību nav
+    // Programmas ieejas punkts, kas izveido RegisteredUserUi objektu un palaiž galveno izvēlni.
     public static void main(String[] args) {
         RegisteredUserUi ui = new RegisteredUserUi();
         ui.RegisteredUserUi();
