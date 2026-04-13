@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class App {
     // Globāls krāsu shēmas karogs: 1 = krāsains teksts ieslēgts, 0 = krāsains teksts izslēgts.
-    public static int colors;
+    public static int colors = 0;
     appFunkcijas app = new appFunkcijas();
 
     // funkcija safeReadLine pieņem String tipa vērtību prompt un Scanner tipa vērtību scanner un atgriež String tipa vērtību rezultatu
@@ -74,14 +74,14 @@ public class App {
                     System.out.println("____________________________________");
                     if (colorAnswer.equals("1")) {
                         // Ieslēdz krāsaino tekstu, iestatot globālo karogu uz 1.
-                        colors = 1;
+                        App.colors = 1;
                         app.clear();
                         ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                         System.out.println();
                         break;
                     } else if (colorAnswer.equals("2")) {
                         // Izslēdz krāsaino tekstu, iestatot globālo karogu uz 0.
-                        colors = 0;
+                        App.colors = 0;
                         app.clear();
                         ConsoleColors.println("[Komanda izpildita]", ConsoleColors.GREEN);
                         System.out.println();
