@@ -78,7 +78,7 @@ public class RegisteredUserFunkcijas {
     // CSV ierakstā saglabā tikai: segvardu un URL (bez ping datiem).
     public HttpPing pedejoReiziSkatits1() {
         HttpPing result = new HttpPing(segvards, ping, timestamp, urlString.toString());
-        CsvFileHandler.saveLine("MilakasVietnes.csv", result.getSegVards() + "," + result.getUrlString(), "Segvards,URL");
+        CsvFileHandler.saveLine("MilakasVietnes.csv", segvards + "," + result.getUrlString(), "Segvards,URL");
         return result;
     }
 

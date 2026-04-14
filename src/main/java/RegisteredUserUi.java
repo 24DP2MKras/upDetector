@@ -387,8 +387,13 @@ public class RegisteredUserUi {
                         continue;
                     }
                     updateUserField(fieldIndex, newValue);
-                    // Ja mainīts segvards vai parole, atjaunina arī objekta pašreizējos laukus.
-                    if (fieldIndex == 2) this.currentSegvards = newValue;
+                    // Ja mainīts segvards, atjaunina arī segvardu Vietnes.csv un MilakasVietnes.csv failos.
+                    if (fieldIndex == 2) {
+                        String vecaisSegvards = this.currentSegvards;
+                        CsvFileHandler.updateSegvardsInCsv("Vietnes.csv", 0, vecaisSegvards, newValue);
+                        CsvFileHandler.updateSegvardsInCsv("MilakasVietnes.csv", 0, vecaisSegvards, newValue);
+                        this.currentSegvards = newValue;
+                    }
                     if (fieldIndex == 4) this.parole = newValue;
                     ConsoleColors.println("[Izmainas ir saglabatas.]", ConsoleColors.GREEN);
                     app.clear();
@@ -407,6 +412,8 @@ public class RegisteredUserUi {
                         // Dzēš lietotāja ierakstu no CSV, izmantojot segvardu kā identifikatoru (kolonna 2).
                         if (promptForCurrentCredentials(answer)) {
                             CsvFileHandler.removeFromCSV("UserData.csv", this.currentSegvards, 2);
+                            CsvFileHandler.removeFromCSV("Vietnes.csv", this.currentSegvards, 0);
+                            CsvFileHandler.removeFromCSV("MilakasVietnes.csv", this.currentSegvards, 0);
                             ConsoleColors.println("[Konts dzests!]", ConsoleColors.GREEN);
                             return;
                         }

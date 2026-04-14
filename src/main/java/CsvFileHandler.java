@@ -542,4 +542,49 @@ public class CsvFileHandler {
 
         return allData;
     }
+
+    // funkcija updateSegvardsInCsv pieņem String tipa vērtību fileName un int tipa vērtību segvardsColumnIndex
+    // un String tipa vērtību vecaisSegvards un String tipa vērtību jaunaisSegvards un atgriež void tipa vērtību nav
+    // Atjaunina segvardu norādītajā CSV datnē - aizstāj veco segvardu ar jauno visās atbilstošajās rindās.
+    public static void updateSegvardsInCsv(String fileName, int segvardsColumnIndex, String vecaisSegvards, String jaunaisSegvards) {
+        try {
+            File dataFolder = ensureDataFolder();
+            if (dataFolder == null) {
+                ConsoleColors.println("[Datu mape nav atrasta.]", ConsoleColors.RED);
+                return;
+            }
+            File file = new File(dataFolder, fileName);
+            if (!file.exists()) return;
+
+            List<String> lines = new ArrayList<>();
+            try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+                String line;
+                boolean firstLine = true;
+                while ((line = br.readLine()) != null) {
+                    // Galvenes rindu pievieno bez izmaiņām.
+                    if (firstLine) {
+                        lines.add(line);
+                        firstLine = false;
+                        continue;
+                    }
+                    String[] row = line.split(",");
+                    // Ja segvarda kolonnā ir vecais segvards, aizstāj to ar jauno.
+                    if (row.length > segvardsColumnIndex && row[segvardsColumnIndex].trim().equals(vecaisSegvards.trim())) {
+                        row[segvardsColumnIndex] = jaunaisSegvards;
+                    }
+                    lines.add(String.join(",", row));
+                }
+            }
+
+            // Pārraksta datni ar atjauninātajām rindām.
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                for (String outputLine : lines) {
+                    bw.write(outputLine);
+                    bw.newLine();
+                }
+            }
+        } catch (IOException e) {
+            ConsoleColors.println("[Kluda atjauninot segvardu CSV: " + e.getMessage() + "]", ConsoleColors.RED);
+        }
+    }
 }

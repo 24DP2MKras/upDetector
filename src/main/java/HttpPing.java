@@ -16,7 +16,7 @@ public class HttpPing {
     // funkcija toString pieņem nav parametru un atgriež String tipa vērtību rezultatu
     // Atgriež ping ierakstu formātā: "[ping] ms , [laika zīmogs], [segvards]" (izmanto vēstures attēlošanai).
     public String toString() {
-        return this.ping + " ms " + ", " + this.timestamp + ", " + segvards;
+        return this.ping + " ms " + ", " + this.timestamp + ", " + this.segvards;
     }
 
     // funkcija toString1 pieņem nav parametru un atgriež String tipa vērtību rezultatu
